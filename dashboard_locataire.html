@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Locataire</title>
+<style>
+body { font-family: Arial; margin: 0; background: #f5f5f5; }
+header { background: #2c3e50; color: white; padding: 15px; text-align: center; }
+nav { background: #34495e; padding: 10px; }
+nav a { color: white; margin-right: 10px; text-decoration: none; }
+.container { display: flex; flex-direction: column; gap: 15px; padding: 20px; }
+.card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+button { padding: 10px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Dashboard Locataire</h2>
+</header>
+
+<nav>
+  <a href="dashboard_locataire.html">Dashboard</a>
+  <a href="contrat_locataire.html">Mon contrat</a>
+  <a href="paiement_locataire.html">Paiement</a>
+  <a href="historique.html">Historique</a>
+  <a href="profil_locataire.html">Profil</a>
+</nav>
+
+<div class="container">
+
+  <p id="bienvenue"></p>
+
+  <div class="card">
+    <h3>Loyer à payer</h3>
+    <p>500$</p>
+  </div>
+
+  <div class="card">
+    <h3>Prochaine échéance</h3>
+    <p>05 Avril 2026</p>
+  </div>
+
+  <div class="card">
+    <h3>Statut</h3>
+    <p>Non payé</p>
+  </div>
+
+  <button onclick="window.location.href='paiement_locataire.html'">
+    Payer maintenant
+  </button>
+
+</div>
+
+<script src="init.js"></script>
+
+<script>
+// sécurité
+if (localStorage.getItem("connecte") !== "true") {
+    window.location.href = "login.html";
+}
+
+// récupérer le locataire connecté
+let locataires = JSON.parse(localStorage.getItem("locataires"));
+let userId = localStorage.getItem("userId");
+let locataire = locataires.find(l => l.id == userId);
+
+// afficher le message de bienvenue
+document.getElementById("bienvenue").innerText = `Bonjour ${locataire.nom}`;
+</script>
+
+</body>
+</html>

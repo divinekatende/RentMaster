@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil - RentMaster</title>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    nav a { margin-right: 10px; text-decoration: none; color: blue; }
+    input, select { padding: 5px; margin: 5px 0; width: 250px; }
+    button { padding: 5px 10px; margin: 5px 0; }
+    #formProfil { border:1px solid #ccc; padding:10px; border-radius:8px; width: 400px; }
+    #stats { margin-top:20px; }
+  </style>
+</head>
+<body>
+  <h1>Mon Profil</h1>
+
+  <nav>
+    <a href="dashboard.html">Dashboard</a>
+    
+  </nav>
+
+  <div id="formProfil">
+    <h2>Informations personnelles</h2>
+    <label>Nom :</label><br>
+    <input type="text" id="nom"><br>
+    <label>Email :</label><br>
+    <input type="email" id="email"><br>
+    <label>Mot de passe actuel :</label><br>
+    <input type="password" id="currentPassword"><br>
+    <label>Nouveau mot de passe :</label><br>
+    <input type="password" id="newPassword"><br>
+    <label>Thème :</label><br>
+    <select id="theme">
+      <option value="clair">Clair</option>
+      <option value="sombre">Sombre</option>
+    </select><br>
+    <button onclick="enregistrerProfil()">Enregistrer</button>
+  </div>
+
+  <div id="stats">
+    <h2>Statistiques rapides</h2>
+    <p>Nombre de Biens : <span id="nbBiens">0</span></p>
+    <p>Nombre de Locataires : <span id="nbLocataires">0</span></p>
+    <p>Nombre de Contrats : <span id="nbContrats">0</span></p>
+  </div>
+
+  <script>
+    // --- Données simulées ---
+    let user = JSON.parse(localStorage.getItem("user")) || {nom:"Bailleur", email:"bailleur@email.com", password:"123456", theme:"clair"};
+    let biens = JSON.parse(localStorage.getItem("biens")) || [];
+    let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
+    let contrats = JSON.parse(localStorage.getItem("contrats")) || [];
+
+    // --- Initialisation ---
+    document.getElementById("nom").value = user.nom;
+    document.getElementById("email").value = user.email;
+    document.getElementById("theme").value = user.theme;
+
+    document.getElementById("nbBiens").innerText = biens.length;
+    document.getElementById("nbLocataires").innerText = locataires.length;
+    document.getElementById("nbContrats").innerText = contrats.length;
+
+    function enregistrerProfil() {
+      const nom = document.getElementById("nom").value;
+      const email = document.getElementById("email").value;
+      const currentPassword = document.getElementById("currentPassword").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const theme = document.getElementById("theme").value;
+
+      if(!nom || !email) { alert("Nom et Email obligatoires !"); return; }
+
+      if(currentPassword && currentPassword !== user.password) {
+        alert("Mot de passe actuel incorrect !");
+        return;
+      }
+
+      user.nom = nom;
+      user.email = email;
+      if(newPassword) user.password = newPassword;
+      user.theme = theme;
+
+      localStorage.setItem("user", JSON.stringify(user));
+      alert("Profil mis à jour !");
+      document.getElementById("currentPassword").value = '';
+      document.getElementById("newPassword").value = '';
+    }
+  </script>
+</body>
+</html>
