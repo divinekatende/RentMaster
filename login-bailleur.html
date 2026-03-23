@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion Bailleur - RentMaster</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo RentMaster" class="logo">
+        <h1>RentMaster</h1>
+    </header>
+
+    <main class="form-container">
+        <h2>Connexion Bailleur</h2>
+        <form onsubmit="connexion(event)">
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="btn">Se connecter</button>
+        </form>
+
+        <p><a href="index.html">Retour à l'accueil</a></p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 RentMaster. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+    function connexion(event) {
+        event.preventDefault(); // empêche la page de recharger
+        window.location.href = "dashboard.html"; // redirige vers le dashboard
+    }
+    </script>
+</body>
+</html>

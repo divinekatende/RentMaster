@@ -1,0 +1,182 @@
+/* RESET DE BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* BODY */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #e0f0ff, #ffffff); /* bleu clair → blanc */
+    color: #0D1B2A;
+    position: relative;
+    overflow: hidden;
+}
+
+/* BLOBS FLUOS ARRIÈRE-PLAN */
+.blob-top-left {
+    position: absolute;
+    top: -150px;
+    left: -150px;
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(135deg, #0D1B2A, #35A1E9, #A9D6E5);
+    border-radius: 50% 40% 60% 50% / 50% 60% 40% 50%;
+    filter: blur(80px);
+    z-index: 0;
+    animation: floatBlob1 14s ease-in-out infinite;
+}
+
+.blob-bottom-right {
+    position: absolute;
+    bottom: -170px;
+    right: -170px;
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #A9D6E5, #FFFFFF, #159EFA);
+    border-radius: 50% 60% 50% 40% / 50% 40% 60% 50%;
+    filter: blur(90px);
+    z-index: 0;
+    animation: floatBlob2 16s ease-in-out infinite;
+}
+
+/* ANIMATIONS BLOBS */
+@keyframes floatBlob1 {
+    0%,100% { transform: translate(0,0) scale(1) rotate(0deg);}
+    50% { transform: translate(20px, 25px) scale(1.1) rotate(45deg);}
+}
+@keyframes floatBlob2 {
+    0%,100% { transform: translate(0,0) scale(1) rotate(0deg);}
+    50% { transform: translate(-20px, -30px) scale(0.95) rotate(-30deg);}
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 30px 20px 20px 20px;
+    background: linear-gradient(135deg, #35A1E9, #0D1B2A); /* bleu ciel → bleu nuit */
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 1;
+}
+
+header img.logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #FFFFFF;
+    background: linear-gradient(135deg, #A9D6E5, #159EFA);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    display: block;
+    margin: 0 auto 10px auto;
+}
+
+header h1 {
+    color: #FFFFFF;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 1px 2px 8px rgba(0,0,0,0.4);
+}
+
+/* MAIN FORM */
+main.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+main.form-container h2 {
+    font-size: 1.9rem;
+    margin-bottom: 30px;
+    color: #0D1B2A;
+    text-align: center;
+}
+
+/* FORMULAIRE */
+form {
+    background: rgba(255,255,255,0.95);
+    padding: 45px 35px;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+input[type="email"],
+input[type="password"] {
+    padding: 14px;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    border: 1px solid #adbae6;
+    transition: 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #159EFA;
+    box-shadow: 0 0 12px rgba(21,158,250,0.4);
+}
+
+/* BOUTONS */
+button.btn {
+    padding: 16px;
+    border-radius: 15px;
+    border: none;
+    font-weight: 700;
+    font-size: 1.15rem;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(45deg, #0D1B2A, #35A1E9, #A9D6E5);
+    transition: 0.4s;
+    margin-top: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+button.btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+}
+
+/* LIEN ACCUEIL */
+p a {
+    color: #0D1B2A;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* FOOTER */
+footer {
+    background: #ECEFF1;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: auto;
+    position: relative;
+    z-index: 1;
+}

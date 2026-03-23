@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Gestion des Contrats - RentMaster</title>
+<style>
+body { font-family: Arial; margin: 20px; background: #f5f5f5; }
+nav a { margin-right: 10px; text-decoration: none; color: blue; }
+input, select { padding: 5px; margin: 5px 0; width: 200px; }
+button { padding: 5px 10px; margin: 5px 0; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+#formAjout { display: none; margin-top: 20px; border:1px solid #ccc; padding:10px; border-radius:8px; background:white; }
+</style>
+</head>
+<body>
+<h1>Gestion des Contrats</h1>
+
+<nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="bien.html">Biens</a>
+  <a href="locataire.html">Locataires</a>
+  <a href="contrat.html">Contrats</a>
+  <a href="paiement.html">Paiements</a>
+</nav>
+
+<button onclick="document.getElementById('formAjout').style.display='block'">+ Ajouter un contrat</button>
+
+<table id="tableContrats">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Bien</th>
+      <th>Locataire</th>
+      <th>Loyer</th>
+      <th>Date début</th>
+      <th>Date fin</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div id="formAjout">
+  <h2 id="formTitle">Ajouter un contrat</h2>
+  <label>Bien :</label>
+  <select id="bienSelect"></select><br>
+  <label>Locataire :</label>
+  <select id="locataireSelect"></select><br>
+  <label>Loyer :</label>
+  <input type="number" id="loyer" min="0"><br>
+  <label>Date début :</label>
+  <input type="date" id="dateDebut"><br>
+  <label>Date fin :</label>
+  <input type="date" id="dateFin"><br>
+  <label>Statut :</label>
+  <select id="statut">
+    <option value="Actif">Actif</option>
+    <option value="Terminé">Terminé</option>
+  </select><br>
+  <button id="btnAjouter" onclick="ajouterContrat()">Ajouter</button>
+  <button onclick="annulerForm()">Annuler</button>
+</div>
+
+<script>
+let biens = JSON.parse(localStorage.getItem("biens")) || [];
+let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
+let contrats = JSON.parse(localStorage.getItem("contrats")) || [];
+let editIndex = -1;
+
+function remplirSelects() {
+  const bienSelect = document.getElementById('bienSelect');
+  const locSelect = document.getElementById('locataireSelect');
+  bienSelect.innerHTML = "";
+  locSelect.innerHTML = "";
+  biens.forEach(b => { bienSelect.innerHTML += `<option value="${b.id}">${b.nom}</option>`; });
+  locataires.forEach(l => { locSelect.innerHTML += `<option value="${l.id}">${l.nom} ${l.prenom}</option>`; });
+}
+
+function afficherContrats() {
+  remplirSelects();
+  const table = document.querySelector('#tableContrats tbody');
+  table.innerHTML = "";
+  contrats.forEach((c, index) => {
+    const row = table.insertRow();
+    const bien = biens.find(b => b.id == c.bienId)?.nom || "Supprimé";
+    const loc = locataires.find(l => l.id == c.locataireId)?.nom + " " + locataires.find(l => l.id == c.locataireId)?.prenom || "Supprimé";
+    row.insertCell(0).innerText = c.id;
+    row.insertCell(1).innerText = bien;
+    row.insertCell(2).innerText = loc;
+    row.insertCell(3).innerText = c.loyer;
+    row.insertCell(4).innerText = c.dateDebut;
+    row.insertCell(5).innerText = c.dateFin;
+    row.insertCell(6).innerText = c.statut;
+    const actionsCell = row.insertCell(7);
+    actionsCell.innerHTML = `<button onclick="modifierContrat(${index})">Modifier</button>
+                             <button onclick="supprimerContrat(${index})">Supprimer</button>`;
+  });
+}
+
+function ajouterContrat() {
+  const bienId = document.getElementById('bienSelect').value;
+  const locId = document.getElementById('locataireSelect').value;
+  const loyer = document.getElementById('loyer').value;
+  const dateDebut = document.getElementById('dateDebut').value;
+  const dateFin = document.getElementById('dateFin').value;
+  const statut = document.getElementById('statut').value;
+
+  if(!bienId || !locId || !loyer || !dateDebut || !dateFin) { alert("Remplis tous les champs !"); return; }
+
+  if(editIndex >= 0) {
+    contrats[editIndex] = { ...contrats[editIndex], bienId, locataireId: locId, loyer, dateDebut, dateFin, statut };
+    editIndex = -1;
+  } else {
+    const newContrat = { id: contrats.length + 1, bienId, locataireId: locId, loyer, dateDebut, dateFin, statut };
+    contrats.push(newContrat);
+  }
+  localStorage.setItem("contrats", JSON.stringify(contrats));
+  afficherContrats();
+  annulerForm();
+}
+
+function modifierContrat(index) {
+  editIndex = index;
+  const c = contrats[index];
+  document.getElementById('bienSelect').value = c.bienId;
+  document.getElementById('locataireSelect').value = c.locataireId;
+  document.getElementById('loyer').value = c.loyer;
+  document.getElementById('dateDebut').value = c.dateDebut;
+  document.getElementById('dateFin').value = c.dateFin;
+  document.getElementById('statut').value = c.statut;
+  document.getElementById('formTitle').innerText = "Modifier un contrat";
+  document.getElementById('btnAjouter').innerText = "Enregistrer";
+  document.getElementById('formAjout').style.display='block';
+}
+
+function supprimerContrat(index) {
+  if(confirm("Voulez-vous vraiment supprimer ce contrat ?")) {
+    contrats.splice(index,1);
+    localStorage.setItem("contrats", JSON.stringify(contrats));
+    afficherContrats();
+  }
+}
+
+function annulerForm() {
+  document.getElementById('formAjout').style.display='none';
+  document.getElementById('loyer').value='';
+  document.getElementById('dateDebut').value='';
+  document.getElementById('dateFin').value='';
+  editIndex=-1;
+  document.getElementById('btnAjouter').innerText="Ajouter";
+  document.getElementById('formTitle').innerText="Ajouter un contrat";
+}
+
+afficherContrats();
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Gestion des Paiements - RentMaster</title>
+<style>
+body { font-family: Arial; margin: 20px; background: #f5f5f5; }
+nav a { margin-right: 10px; text-decoration: none; color: blue; }
+input, select { padding: 5px; margin: 5px 0; width: 200px; }
+button { padding: 5px 10px; margin: 5px 0; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+.en-retard { color: red; font-weight: bold; }
+.ok { color: green; font-weight: bold; }
+#formPaiement { display: none; margin-top: 20px; border:1px solid #ccc; padding:10px; border-radius:8px; background:white; }
+</style>
+</head>
+<body>
+<h1>Gestion des Paiements</h1>
+
+<nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="bien.html">Biens</a>
+  <a href="locataire.html">Locataires</a>
+  <a href="contrat.html">Contrats</a>
+  <a href="paiement.html">Paiements</a>
+</nav>
+
+<button onclick="document.getElementById('formPaiement').style.display='block'">+ Ajouter un paiement</button>
+
+<table id="tablePaiements">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Locataire</th>
+      <th>Bien</th>
+      <th>Montant</th>
+      <th>Date</th>
+      <th>Mode</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div id="formPaiement">
+  <h2 id="formTitle">Ajouter un paiement</h2>
+  <label>Contrat :</label>
+  <select id="contratSelect"></select><br>
+  <label>Montant :</label>
+  <input type="number" id="montant" min="0"><br>
+  <label>Date :</label>
+  <input type="date" id="datePaiement"><br>
+  <label>Mode :</label>
+  <select id="mode">
+    <option value="Espèces">Espèces</option>
+    <option value="Virement">Virement</option>
+    <option value="Chèque">Chèque</option>
+  </select><br>
+  <button id="btnAjouter" onclick="ajouterPaiement()">Ajouter</button>
+  <button onclick="annulerForm()">Annuler</button>
+</div>
+
+<script>
+let contrats = JSON.parse(localStorage.getItem("contrats")) || [];
+let paiements = JSON.parse(localStorage.getItem("paiements")) || [];
+let biens = JSON.parse(localStorage.getItem("biens")) || [];
+let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
+let editIndex = -1;
+
+// Remplir le select des contrats
+function remplirContrats() {
+  const select = document.getElementById('contratSelect');
+  select.innerHTML = "";
+  contrats.forEach(c => {
+    const loc = locataires.find(l => l.id == c.locataireId)?.nom + " " + locataires.find(l => l.id == c.locataireId)?.prenom || "Supprimé";
+    const bien = biens.find(b => b.id == c.bienId)?.nom || "Supprimé";
+    select.innerHTML += `<option value="${c.id}">${loc} - ${bien}</option>`;
+  });
+}
+
+function afficherPaiements() {
+  remplirContrats();
+  const table = document.querySelector('#tablePaiements tbody');
+  table.innerHTML = "";
+  const today = new Date();
+
+  paiements.forEach((p,index) => {
+    const contrat = contrats.find(c => c.id == p.contratId);
+    const loc = contrat ? locataires.find(l => l.id == contrat.locataireId)?.nom + " " + locataires.find(l => l.id == contrat.locataireId)?.prenom : "Supprimé";
+    const bien = contrat ? biens.find(b => b.id == contrat.bienId)?.nom : "Supprimé";
+
+    const row = table.insertRow();
+    row.insertCell(0).innerText = p.id;
+    row.insertCell(1).innerText = loc;
+    row.insertCell(2).innerText = bien;
+    row.insertCell(3).innerText = p.montant;
+    row.insertCell(4).innerText = p.date;
+    row.insertCell(5).innerText = p.mode;
+    const statutCell = row.insertCell(6);
+    const paiementDate = new Date(p.date);
+    statutCell.innerText = paiementDate < today ? "En retard" : "OK";
+    statutCell.className = paiementDate < today ? "en-retard" : "ok";
+
+    const actionsCell = row.insertCell(7);
+    actionsCell.innerHTML = `<button onclick="modifierPaiement(${index})">Modifier</button>
+                             <button onclick="supprimerPaiement(${index})">Supprimer</button>`;
+  });
+}
+
+function ajouterPaiement() {
+  const contratId = document.getElementById('contratSelect').value;
+  const montant = document.getElementById('montant').value;
+  const date = document.getElementById('datePaiement').value;
+  const mode = document.getElementById('mode').value;
+
+  if(!contratId || !montant || !date) { alert("Remplis tous les champs !"); return; }
+
+  if(editIndex >=0) {
+    paiements[editIndex] = { ...paiements[editIndex], contratId, montant, date, mode };
+    editIndex=-1;
+  } else {
+    const newPaiement = { id: paiements.length + 1, contratId, montant, date, mode };
+    paiements.push(newPaiement);
+  }
+  localStorage.setItem("paiements",JSON.stringify(paiements));
+  afficherPaiements();
+  annulerForm();
+}
+
+function modifierPaiement(index) {
+  editIndex = index;
+  const p = paiements[index];
+  document.getElementById('contratSelect').value = p.contratId;
+  document.getElementById('montant').value = p.montant;
+  document.getElementById('datePaiement').value = p.date;
+  document.getElementById('mode').value = p.mode;
+  document.getElementById('formTitle').innerText = "Modifier un paiement";
+  document.getElementById('btnAjouter').innerText = "Enregistrer";
+  document.getElementById('formPaiement').style.display='block';
+}
+
+function supprimerPaiement(index) {
+  if(confirm("Voulez-vous vraiment supprimer ce paiement ?")) {
+    paiements.splice(index,1);
+    localStorage.setItem("paiements",JSON.stringify(paiements));
+    afficherPaiements();
+  }
+}
+
+function annulerForm() {
+  document.getElementById('formPaiement').style.display='none';
+  document.getElementById('montant').value='';
+  document.getElementById('datePaiement').value='';
+  document.getElementById('mode').value='Espèces';
+  editIndex=-1;
+  document.getElementById('btnAjouter').innerText="Ajouter";
+  document.getElementById('formTitle').innerText="Ajouter un paiement";
+}
+
+// Initialisation
+afficherPaiements();
+</script>
+</body>
+</html>

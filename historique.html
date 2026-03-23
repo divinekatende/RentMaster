@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Historique des paiements</title>
+<style>
+body { font-family: Arial; background:#f5f5f5; }
+header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+nav a { margin-right:10px; text-decoration:none; color:#34495e; }
+.container { width:300px; margin:20px auto; background:white; padding:20px; border-radius:10px; }
+.card { padding:15px; border-radius:10px; background:#ecf0f1; margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Historique Paiements</h2>
+</header>
+
+<nav>
+  <a href="dashboard_locataire.html">Dashboard</a>
+  <a href="contrat_locataire.html">Mon contrat</a>
+  <a href="paiement_locataire.html">Paiement</a>
+  <a href="historique.html">Historique</a>
+  <a href="profil_locataire.html">Profil</a>
+</nav>
+
+<div class="container" id="historiqueContainer"></div>
+
+<script src="init.js"></script>
+<script>
+// sécurité
+if(localStorage.getItem("connecte") !== "true"){
+    window.location.href="login.html";
+}
+
+// récupérer locataire
+let locataires = JSON.parse(localStorage.getItem("locataires"));
+let userId = localStorage.getItem("userId");
+let locataire = locataires.find(l => l.id == userId);
+
+// récupérer paiements
+let paiements = JSON.parse(localStorage.getItem("paiements")) || [];
+let userPaiements = paiements.filter(p => p.locataireId == locataire.id);
+
+let container = document.getElementById("historiqueContainer");
+if(userPaiements.length === 0){
+    container.innerHTML = "<p>Aucun paiement enregistré.</p>";
+} else {
+    userPaiements.forEach(p => {
+        container.innerHTML += `
+            <div class="card">
+                <p><strong>Montant:</strong> ${p.montant}$</p>
+                <p><strong>Date:</strong> ${p.date}</p>
+                <p><strong>Statut:</strong> ${p.statut}</p>
+            </div>`;
+    });
+}
+</script>
+</body>
+</html>
