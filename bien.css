@@ -1,0 +1,120 @@
+/* --- Reset et base --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    /* Image de fond */
+    background-image: url('fond.png'); /* remplace par ton image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #1b263b; /* texte bleu foncé */
+}
+
+/* --- Navigation --- */
+nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #1b263b; /* bleu foncé */
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+}
+nav a:hover {
+    color: #5dade2; /* bleu ciel doux */
+    transform: translateY(-2px);
+}
+
+/* --- Inputs & selects --- */
+input, select, textarea {
+    padding: 8px 10px;
+    margin: 5px 0 10px 0;
+    width: 220px;
+    border: 1px solid #b0c4de; /* bleu clair doux */
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.85); /* semi-transparent pour mieux voir l'image de fond */
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #3498db; /* bleu intermédiaire */
+    box-shadow: 0 0 8px rgba(52,152,219,0.3);
+}
+
+/* --- Boutons --- */
+button {
+    padding: 8px 14px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #3498db, #5dade2, #f8fafd, #f7e7d0); /* bleu → bleu ciel → blanc → beige */
+    color: #1b263b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(52,152,219,0.2);
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52,152,219,0.35);
+    opacity: 0.95;
+}
+
+/* --- Tableaux --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: linear-gradient(to right, #e6f0fa, #ffffff, #fbeef4); /* bleu clair → blanc → rose clair */
+}
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dfe6ef;
+}
+th {
+    background: #3498db; /* bleu intermédiaire */
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.95em;
+}
+tr:hover {
+    background: #f1f8ff; /* léger bleu clair */
+}
+
+/* --- Statuts --- */
+.vacant { color: #27ae60; font-weight: bold; }       /* vert pour disponible */
+.loue { color: #e74c3c; font-weight: bold; }         /* rouge pour loué */
+.maintenance { color: #f39c12; font-weight: bold; }  /* orange pour maintenance */
+
+/* --- Formulaire d'ajout/modification --- */
+#formAjout {
+    display: none;
+    margin-top: 20px;
+    border: 1px solid #b0c4de;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.9); /* semi-transparent pour mieux voir le fond */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+#formAjout h2 {
+    margin-bottom: 15px;
+    color: #1b263b;
+}
+
+/* --- Images --- */
+img {
+    max-width: 50px;
+    border-radius: 5px;
+    vertical-align: middle;
+    margin-right: 8px;
+    border: 1px solid #ccd6f6;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    input, select, textarea { width: 100%; }
+    nav a { display: block; margin-bottom: 5px; }
+}
