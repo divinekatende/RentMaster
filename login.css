@@ -1,181 +1,135 @@
-/* RESET DE BASE */
-* {
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-}
-
-/* BODY */
-body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, #e0f0ff, #ffffff); /* bleu clair → blanc */
-    color: #0D1B2A;
+    
+    /* Image de fond */
+    background: url('fond2.png') no-repeat center center fixed;
+    background-size: cover;
     position: relative;
-    overflow: hidden;
 }
 
-/* BLOBS FLUOS ARRIÈRE-PLAN */
-.blob-top-left {
+/* Overlay pour adoucir l'image */
+body::before {
+    content: "";
     position: absolute;
-    top: -150px;
-    left: -150px;
-    width: 350px;
-    height: 350px;
-    background: linear-gradient(135deg, #0D1B2A, #35A1E9, #A9D6E5);
-    border-radius: 50% 40% 60% 50% / 50% 60% 40% 50%;
-    filter: blur(80px);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.7); /* blanche semi-transparente */
     z-index: 0;
-    animation: floatBlob1 14s ease-in-out infinite;
 }
 
-.blob-bottom-right {
-    position: absolute;
-    bottom: -170px;
-    right: -170px;
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(135deg, #A9D6E5, #FFFFFF, #159EFA);
-    border-radius: 50% 60% 50% 40% / 50% 40% 60% 50%;
-    filter: blur(90px);
-    z-index: 0;
-    animation: floatBlob2 16s ease-in-out infinite;
-}
-
-/* ANIMATIONS BLOBS */
-@keyframes floatBlob1 {
-    0%,100% { transform: translate(0,0) scale(1) rotate(0deg);}
-    50% { transform: translate(20px, 25px) scale(1.1) rotate(45deg);}
-}
-@keyframes floatBlob2 {
-    0%,100% { transform: translate(0,0) scale(1) rotate(0deg);}
-    50% { transform: translate(-20px, -30px) scale(0.95) rotate(-30deg);}
-}
-
-/* HEADER */
+/* Header */
 header {
-    text-align: center;
-    padding: 30px 20px 20px 20px;
-    background: linear-gradient(135deg, #35A1E9, #0D1B2A); /* bleu ciel → bleu nuit */
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 20px;
+    background: rgba(52, 152, 219, 0.85); /* header semi-transparent */
+    color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
     z-index: 1;
+    position: relative;
 }
 
 header img.logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #FFFFFF;
-    background: linear-gradient(135deg, #A9D6E5, #159EFA);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    display: block;
-    margin: 0 auto 10px auto;
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 header h1 {
-    color: #FFFFFF;
-    font-size: 2rem;
+    margin: 0;
+    font-size: 2em;
     font-weight: 700;
-    text-shadow: 1px 2px 8px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
 }
 
-/* MAIN FORM */
-main.form-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 20px;
+/* Form container */
+.form-container {
+    background: rgba(255, 255, 255, 0.95); /* semi-transparent pour voir le fond */
+    width: 380px;
+    max-width: 90%;
+    margin: 80px auto;
+    padding: 35px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: transform 0.3s ease;
     position: relative;
     z-index: 1;
 }
 
-main.form-container h2 {
-    font-size: 1.9rem;
-    margin-bottom: 30px;
-    color: #0D1B2A;
-    text-align: center;
+.form-container:hover {
+    transform: translateY(-5px);
 }
 
-/* FORMULAIRE */
-form {
-    background: rgba(255,255,255,0.95);
-    padding: 45px 35px;
-    border-radius: 25px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
+/* Inputs */
+input[type="text"],
 input[type="email"],
 input[type="password"] {
-    padding: 14px;
-    margin-bottom: 25px;
-    border-radius: 15px;
-    border: 1px solid #adbae6;
-    transition: 0.3s;
+    width: 100%;
+    padding: 14px 12px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    background-color: #f0f4f8;
 }
 
 input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52,152,219,0.4);
     outline: none;
-    border-color: #159EFA;
-    box-shadow: 0 0 12px rgba(21,158,250,0.4);
+    background-color: #eaf1f8;
 }
 
-/* BOUTONS */
+/* Buttons */
 button.btn {
-    padding: 16px;
-    border-radius: 15px;
+    width: 100%;
+    padding: 14px;
     border: none;
-    font-weight: 700;
-    font-size: 1.15rem;
+    border-radius: 12px;
+    background: linear-gradient(to right, #3498db, #5dade2);
+    color: white;
+    font-size: 1.05em;
+    font-weight: 600;
     cursor: pointer;
-    color: #fff;
-    background: linear-gradient(45deg, #0D1B2A, #35A1E9, #A9D6E5);
-    transition: 0.4s;
-    margin-top: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 button.btn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+    background: linear-gradient(to right, #2e86c1, #3498db);
+    transform: scale(1.03);
 }
 
-/* LIEN ACCUEIL */
-p a {
-    color: #0D1B2A;
+/* Links */
+.form-container a {
+    color: #3498db;
     text-decoration: none;
-    font-size: 0.9rem;
-    margin-top: 15px;
-    display: inline-block;
+    font-size: 0.95em;
+    transition: 0.3s;
 }
 
-p a:hover {
+.form-container a:hover {
     text-decoration: underline;
 }
 
-/* FOOTER */
+/* Footer */
 footer {
-    background: #ECEFF1;
     text-align: center;
-    padding: 15px;
-    font-size: 0.85rem;
+    padding: 20px 0;
+    background: rgba(240, 244, 248, 0.8);
     color: #555;
+    font-size: 0.9em;
     margin-top: auto;
     position: relative;
     z-index: 1;
