@@ -4,18 +4,60 @@
 <meta charset="UTF-8">
 <title>Paiement</title>
 <style>
-body { font-family: Arial; background:#f5f5f5; }
-header { background:#2c3e50; color:white; padding:15px; text-align:center; }
-nav a { margin-right:10px; text-decoration:none; color:#34495e; }
-.container { width:300px; margin:20px auto; background:white; padding:20px; border-radius:10px; }
-input, button { width:100%; padding:10px; margin:10px 0; }
-button { background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer; }
+body {
+    font-family: Arial, sans-serif;
+    margin:0;
+    background: linear-gradient(135deg, #3498db, #5dade2);
+    color:#1b263b;
+}
+header {
+    display:flex;
+    align-items:center;
+    padding:15px 20px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-bottom:2px solid #2980b9;
+}
+header img { height:50px; margin-right:15px; }
+header h2 { margin:0; }
+nav {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    background: rgba(255,255,255,0.85);
+    padding:10px 0;
+    border-bottom:2px solid #2980b9;
+}
+nav a {
+    margin:5px 10px;
+    text-decoration:none;
+    color:#1b263b;
+    font-weight:500;
+    padding:5px 10px;
+    border-radius:6px;
+    transition:0.3s;
+}
+nav a:hover { background: #d3e6f6; }
+
+.container {
+    width:90%;
+    max-width:400px;
+    margin:20px auto;
+    background: rgba(255,255,255,0.9);
+    padding:20px;
+    border-radius:10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+input, button { width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #b0c4de; outline:none; }
+button { background:#2980b9; color:white; border:none; cursor:pointer; transition:0.3s; }
+button:hover { background:#3498db; }
 #message { color:green; font-weight:bold; text-align:center; }
 </style>
 </head>
 <body>
 
 <header>
+  <img src="logo.png" alt="Logo">
   <h2>Paiement</h2>
 </header>
 
@@ -35,41 +77,26 @@ button { background:#3498db; color:white; border:none; border-radius:5px; cursor
 
 <script src="init.js"></script>
 <script>
-// sécurité
-if(localStorage.getItem("connecte") !== "true"){
-    window.location.href="login.html";
-}
-
-// récupérer locataire
+if(localStorage.getItem("connecte") !== "true"){ window.location.href="login.html"; }
 let locataires = JSON.parse(localStorage.getItem("locataires"));
 let userId = localStorage.getItem("userId");
 let locataire = locataires.find(l => l.id == userId);
 
-// initialiser paiements
 if(!localStorage.getItem("paiements")){
     localStorage.setItem("paiements", JSON.stringify([]));
 }
-
 let paiements = JSON.parse(localStorage.getItem("paiements"));
 
 function payer(){
     let montant = document.getElementById("montant").value;
     if(!montant) return alert("Veuillez saisir un montant");
-
-    let paiement = {
-        id: paiements.length+1,
-        locataireId: locataire.id,
-        montant: parseFloat(montant),
-        date: new Date().toLocaleDateString(),
-        statut: "Payé"
-    };
-
+    let paiement = { id:paiements.length+1, locataireId:locataire.id, montant:parseFloat(montant), date:new Date().toLocaleDateString(), statut:"Payé" };
     paiements.push(paiement);
     localStorage.setItem("paiements", JSON.stringify(paiements));
-
     document.getElementById("message").innerText = "Paiement effectué !";
     document.getElementById("montant").value = "";
 }
 </script>
+
 </body>
 </html>

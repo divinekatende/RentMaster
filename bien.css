@@ -112,6 +112,27 @@ img {
     margin-right: 8px;
     border: 1px solid #ccd6f6;
 }
+/* --- Footer --- */
+footer {
+    background: rgba(255,255,255,0.9); /* semi-transparent pour fond */
+    color: #1b263b; /* texte bleu foncé */
+    text-align: center;
+    padding: 15px 20px;
+    border-top: 2px solid #3498db; /* trait bleu intermédiaire */
+    border-radius: 8px 8px 0 0;
+    margin-top: 30px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+footer a:hover {
+    color: #5dade2;
+}
 
 /* --- Responsive --- */
 @media (max-width: 900px) {

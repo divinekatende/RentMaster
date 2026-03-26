@@ -2,129 +2,282 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Profil Utilisateur</title>
+<title>Profil - RentMaster</title>
 <style>
-body { font-family: Arial; background:#f5f5f5; }
-.container { width:350px; margin:50px auto; background:white; padding:20px; border-radius:10px; }
-input, select, button { width:100%; padding:10px; margin:8px 0; }
-button.save { background:green; color:white; border:none; border-radius:5px; cursor:pointer; }
-button.logout { background:red; color:white; border:none; border-radius:5px; cursor:pointer; }
-img { width:100px; border-radius:50%; display:block; margin:10px auto; }
-h2 { text-align:center; }
+/* --- Reset et base --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-image: url('fond.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #1b263b;
+}
+
+/* --- Navigation --- */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #3498db;
+    margin-bottom: 20px;
+}
+nav a {
+    text-decoration: none;
+    color: #1b263b;
+    font-weight: 500;
+    margin-right: 15px;
+    transition: color 0.3s, transform 0.3s;
+}
+nav a:hover {
+    color: #5dade2;
+    transform: translateY(-2px);
+}
+#deconnexionBtn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #e74c3c, #f1948a); 
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+#deconnexionBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(231,76,60,0.35);
+    opacity: 0.95;
+}
+
+/* --- Main --- */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-height: calc(100vh - 100px);
+    padding-bottom: 40px;
+}
+
+/* --- Formulaire Profil --- */
+#formProfil {
+    background: rgba(255,255,255,0.9);
+    padding: 25px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+#formProfil h2 {
+    margin-bottom: 15px;
+    color: #1b263b;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+input, select {
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    width: 100%;
+    border: 1px solid #b0c4de;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.85);
+}
+input:focus, select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 10px rgba(52,152,219,0.3);
+}
+.option-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.option-checkbox input {
+    width: auto;
+    margin-right: 10px;
+}
+
+/* --- Boutons --- */
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #3498db, #5dade2, #d3e6f6, #fbeef4); 
+    color: #1b263b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(52,152,219,0.2);
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52,152,219,0.35);
+    opacity: 0.95;
+}
+
+/* --- Statistiques --- */
+#stats {
+    background: rgba(255,255,255,0.9);
+    padding: 20px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+#stats h2 {
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+/* --- Footer --- */
+footer {
+    background: rgba(255,255,255,0.9);
+    color: #1b263b;
+    text-align: center;
+    padding: 15px 20px;
+    border-top: 2px solid #3498db;
+    border-radius: 8px 8px 0 0;
+    margin-top: 30px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    font-size: 0.9em;
+}
+footer a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+footer a:hover {
+    color: #5dade2;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    #formProfil, #stats { width: 95%; }
+    nav { flex-direction: column; align-items: flex-start; }
+    nav a, #deconnexionBtn { margin: 5px 0; }
+}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="dashboard_locataire.html">Dashboard</a>
-  <a href="contrat_locataire.html">Mon contrat</a>
-  <a href="paiement_locataire.html">Paiement</a>
-  <a href="historique.html">Historique</a>
-  <a href="profil_locataire.html">Profil</a>
+    <a href="dashboard_locataire.html">Dashboard</a>
+    <button id="deconnexionBtn" onclick="deconnexion()">Déconnexion</button>
 </nav>
 
-<div class="container">
-<h2>Profil Utilisateur</h2>
+<main>
+<div id="formProfil">
+    <h2>Informations personnelles</h2>
+    <label>Nom :</label>
+    <input type="text" id="nom">
+    <label>Email :</label>
+    <input type="email" id="email">
+    <label>Mot de passe actuel :</label>
+    <input type="password" id="currentPassword">
+    <label>Nouveau mot de passe :</label>
+    <input type="password" id="newPassword">
 
-<img id="photo" src=""><br>
-<input type="file" id="uploadPhoto">
+    <h2>Paramètres</h2>
+    <label>Thème :</label>
+    <select id="theme">
+        <option value="clair">Clair</option>
+        <option value="sombre">Sombre</option>
+    </select>
 
-<input type="text" id="nom" placeholder="Nom et Prénom">
-<input type="email" id="email" placeholder="Email">
-<input type="tel" id="telephone" placeholder="Téléphone">
-<input type="password" id="password" placeholder="Nouveau mot de passe">
+    <div class="option-checkbox">
+        <input type="checkbox" id="notifications">
+        <label for="notifications">Activer les notifications</label>
+    </div>
 
-<select id="role">
-    <option value="utilisateur">Utilisateur</option>
-    <option value="admin">Admin</option>
-    <option value="agent">Agent</option>
-    <option value="propriétaire">Propriétaire</option>
-</select>
+    <div class="option-checkbox">
+        <input type="checkbox" id="newsletter">
+        <label for="newsletter">Recevoir la newsletter</label>
+    </div>
 
-<p>Dernière connexion: <span id="lastLogin"></span></p>
-
-<h3>Préférences</h3>
-<label>
-    <input type="checkbox" id="notif"> Recevoir notifications
-</label>
-<select id="theme">
-    <option value="clair">Thème clair</option>
-    <option value="sombre">Thème sombre</option>
-</select>
-<select id="langue">
-    <option value="fr">Français</option>
-    <option value="en">Anglais</option>
-</select>
-
-<button class="save" onclick="sauvegarder()">Sauvegarder</button>
-<button class="logout" onclick="logout()">Déconnexion</button>
+    <button onclick="enregistrerProfil()">Enregistrer</button>
 </div>
 
-<script src="init.js"></script>
+<div id="stats">
+    <h2>Statistiques rapides</h2>
+    <p>Nombre de Biens : <span id="nbBiens">0</span></p>
+    <p>Nombre de Locataires : <span id="nbLocataires">0</span></p>
+    <p>Nombre de Contrats : <span id="nbContrats">0</span></p>
+</div>
+</main>
+
+<footer>
+  <p>&copy; 2026 RentMaster. Tous droits réservés.</p>
+  <p>
+    Contact : <a href="mailto:divinekatende23@gmail.com">divinekatende23@gmail.com</a> | 
+    Portfolio : <a href="https://divinekatende.github.io/DIVKT/" target="_blank">Mon Portfolio</a>
+  </p>
+</footer>
+
 <script>
-// sécurité
-if(localStorage.getItem("connecte") !== "true"){
-    window.location.href="login.html";
-}
+// --- Données simulées ---
+let user = JSON.parse(localStorage.getItem("user")) || {
+  nom:"Bailleur",
+  email:"bailleur@email.com",
+  password:"123456",
+  theme:"clair",
+  notifications:true,
+  newsletter:false
+};
 
-// récupérer locataire/utilisateur connecté
-let utilisateurs = JSON.parse(localStorage.getItem("locataires")) || [];
-let userId = localStorage.getItem("userId");
-let index = utilisateurs.findIndex(u => u.id == userId);
-let user = utilisateurs[index];
+let biens = JSON.parse(localStorage.getItem("biens")) || [];
+let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
+let contrats = JSON.parse(localStorage.getItem("contrats")) || [];
 
-// afficher infos
-document.getElementById("nom").value = user.nom || "";
-document.getElementById("email").value = user.email || "";
-document.getElementById("telephone").value = user.telephone || "";
-if(user.photo) document.getElementById("photo").src = user.photo;
-document.getElementById("role").value = user.role || "utilisateur";
-document.getElementById("lastLogin").innerText = user.lastLogin || "Jamais";
-document.getElementById("notif").checked = user.preferences?.notifications || false;
-document.getElementById("theme").value = user.preferences?.theme || "clair";
-document.getElementById("langue").value = user.preferences?.langue || "fr";
+// --- Initialisation ---
+document.getElementById("nom").value = user.nom;
+document.getElementById("email").value = user.email;
+document.getElementById("theme").value = user.theme;
+document.getElementById("notifications").checked = user.notifications;
+document.getElementById("newsletter").checked = user.newsletter;
 
-// sauvegarder modifications
-function sauvegarder(){
-    user.nom = document.getElementById("nom").value;
-    user.email = document.getElementById("email").value;
-    user.telephone = document.getElementById("telephone").value;
-    let newPassword = document.getElementById("password").value;
-    if(newPassword) user.password = newPassword; // pour plus tard: hasher le mdp
+document.getElementById("nbBiens").innerText = biens.length;
+document.getElementById("nbLocataires").innerText = locataires.length;
+document.getElementById("nbContrats").innerText = contrats.length;
 
-    user.role = document.getElementById("role").value;
-    user.preferences = {
-        notifications: document.getElementById("notif").checked,
-        theme: document.getElementById("theme").value,
-        langue: document.getElementById("langue").value
-    };
+function enregistrerProfil() {
+    const nom = document.getElementById("nom").value;
+    const email = document.getElementById("email").value;
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const theme = document.getElementById("theme").value;
+    const notifications = document.getElementById("notifications").checked;
+    const newsletter = document.getElementById("newsletter").checked;
 
-    let file = document.getElementById("uploadPhoto").files[0];
-    if(file){
-        let reader = new FileReader();
-        reader.onload = function(e){
-            user.photo = e.target.result;
-            utilisateurs[index] = user;
-            localStorage.setItem("locataires", JSON.stringify(utilisateurs));
-            document.getElementById("photo").src = user.photo;
-            alert("Profil mis à jour !");
-        }
-        reader.readAsDataURL(file);
-    } else {
-        utilisateurs[index] = user;
-        localStorage.setItem("locataires", JSON.stringify(utilisateurs));
-        alert("Profil mis à jour !");
+    if(!nom || !email){ alert("Nom et Email obligatoires !"); return; }
+    if(currentPassword && currentPassword !== user.password){
+        alert("Mot de passe actuel incorrect !");
+        return;
     }
+
+    user.nom = nom;
+    user.email = email;
+    if(newPassword) user.password = newPassword;
+    user.theme = theme;
+    user.notifications = notifications;
+    user.newsletter = newsletter;
+
+    localStorage.setItem("user", JSON.stringify(user));
+    alert("Profil mis à jour !");
+    document.getElementById("currentPassword").value = '';
+    document.getElementById("newPassword").value = '';
 }
 
-// déconnexion
-function logout(){
-    user.lastLogin = new Date().toLocaleString();
-    utilisateurs[index] = user;
-    localStorage.setItem("locataires", JSON.stringify(utilisateurs));
-    localStorage.removeItem("connecte");
-    localStorage.removeItem("userId");
-    window.location.href = "login.html";
+// --- Déconnexion ---
+function deconnexion() {
+    window.location.href = "index.html";
 }
 </script>
 </body>
