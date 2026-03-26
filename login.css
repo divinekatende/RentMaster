@@ -7,7 +7,7 @@ body {
     flex-direction: column;
     
     /* Image de fond */
-    background: url('fond2.png') no-repeat center center fixed;
+    background: url('fond.png') no-repeat center center fixed;
     background-size: cover;
     position: relative;
 }
@@ -17,7 +17,7 @@ body::before {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.7); /* blanche semi-transparente */
+    background: rgba(230, 245, 255, 0.7); /* bleu très clair */
     z-index: 0;
 }
 
@@ -27,7 +27,9 @@ header {
     align-items: center;
     justify-content: center;
     padding: 25px 20px;
-    background: rgba(52, 152, 219, 0.85); /* header semi-transparent */
+
+    background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8); /* bleu foncé → bleu → bleu ciel */
+
     color: white;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     border-bottom-left-radius: 15px;
@@ -53,13 +55,15 @@ header h1 {
 
 /* Form container */
 .form-container {
-    background: rgba(255, 255, 255, 0.95); /* semi-transparent pour voir le fond */
+    background: rgba(255, 255, 255, 0.92);
     width: 380px;
     max-width: 90%;
     margin: 80px auto;
     padding: 35px 30px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+    box-shadow: 0 10px 30px rgba(30, 58, 138, 0.2); /* ombre bleutée */
+
     text-align: center;
     transition: transform 0.3s ease;
     position: relative;
@@ -77,18 +81,20 @@ input[type="password"] {
     width: 100%;
     padding: 14px 12px;
     margin: 12px 0;
-    border: 1px solid #ccc;
+
+    border: 1px solid #cbd5f5; /* bleu clair */
     border-radius: 12px;
     font-size: 1em;
+
+    background-color: #eff6ff; /* bleu très clair */
     transition: all 0.3s ease;
-    background-color: #f0f4f8;
 }
 
 input:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 8px rgba(52,152,219,0.4);
+    border-color: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
     outline: none;
-    background-color: #eaf1f8;
+    background-color: #e0f2fe; /* bleu ciel */
 }
 
 /* Buttons */
@@ -97,7 +103,9 @@ button.btn {
     padding: 14px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(to right, #3498db, #5dade2);
+
+    background: linear-gradient(to right, #2563eb, #38bdf8, #7dd3fc); /* bleu → ciel → clair */
+
     color: white;
     font-size: 1.05em;
     font-weight: 600;
@@ -107,19 +115,20 @@ button.btn {
 }
 
 button.btn:hover {
-    background: linear-gradient(to right, #2e86c1, #3498db);
+    background: linear-gradient(to right, #1e40af, #2563eb);
     transform: scale(1.03);
 }
 
 /* Links */
 .form-container a {
-    color: #3498db;
+    color: #2563eb;
     text-decoration: none;
     font-size: 0.95em;
     transition: 0.3s;
 }
 
 .form-container a:hover {
+    color: #1e3a8a;
     text-decoration: underline;
 }
 
@@ -127,8 +136,8 @@ button.btn:hover {
 footer {
     text-align: center;
     padding: 20px 0;
-    background: rgba(240, 244, 248, 0.8);
-    color: #555;
+    background: rgba(219, 234, 254, 0.8); /* bleu clair */
+    color: #1e3a8a;
     font-size: 0.9em;
     margin-top: auto;
     position: relative;

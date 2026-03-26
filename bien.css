@@ -36,7 +36,7 @@ input, select, textarea {
     background: rgba(255,255,255,0.85); /* semi-transparent pour mieux voir l'image de fond */
 }
 input:focus, select:focus, textarea:focus {
-    border-color: #3498db; /* bleu intermédiaire */
+    border-color: #090067; /* bleu intermédiaire */
     box-shadow: 0 0 8px rgba(52,152,219,0.3);
 }
 
@@ -46,7 +46,7 @@ button {
     margin: 5px 0;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(90deg, #3498db, #5dade2, #f8fafd, #f7e7d0); /* bleu → bleu ciel → blanc → beige */
+    background: linear-gradient(90deg, #3498db, #3f31fc, #afc5f1, #d3e6f6); /* bleu → bleu ciel → blanc → beige */
     color: #1b263b;
     font-weight: 600;
     cursor: pointer;

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Dashboard - RentMaster</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 /* --- Reset et base --- */
@@ -12,7 +13,7 @@ body { display: flex; min-height: 100vh; background: #f0f2f5; transition: all 0.
 /* --- Menu latéral rétractable --- */
 aside {
     width: 220px;
-    background: linear-gradient(to bottom, #4a90e2, #357ABD);
+    background: linear-gradient(to bottom, #2e21e6, #40affe, #85c1e9); /* bleu → bleu ciel → bleu clair */
     color: white;
     display: flex;
     flex-direction: column;
@@ -20,6 +21,7 @@ aside {
     position: relative;
     transition: all 0.3s;
 }
+aside i { margin-right: 8px; }
 aside.collapsed { width: 60px; }
 aside h2 { font-size: 1.5em; margin-bottom: 20px; text-align: center; }
 aside.collapsed h2 { display: none; }
@@ -45,7 +47,57 @@ aside a:hover { background: rgba(255,255,255,0.2); }
     color: white;
     cursor: pointer;
 }
+/* --- image --- */
+.carousel-section {
+    max-width: 900px;
+    margin: 30px auto;
+    text-align: center;
+}
 
+.carousel-title {
+    font-size: 1.5rem;
+    color: #2e21e6; /* bleu principal RentMaster */
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Slider */
+.house-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 12px;
+    padding-bottom: 10px;
+}
+
+.house-slide {
+    flex: 0 0 auto;
+    width: 250px; /* largeur fixe pour chaque image */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.house-slide img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/* Masquer la barre de scroll */
+.house-carousel::-webkit-scrollbar {
+    display: none;
+}
+.house-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .house-slide { width: 180px; height: 130px; }
+}
 /* --- Contenu principal --- */
 main { flex: 1; padding: 30px; overflow-y: auto; transition: all 0.3s; }
 h1, h2 { color: #34495e; margin-bottom: 15px; }
@@ -65,14 +117,15 @@ h1, h2 { color: #34495e; margin-bottom: 15px; }
 .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
 .card h3 { margin-bottom: 8px; color: #357ABD; }
 .card p { font-size: 1.3em; margin-bottom: 10px; }
+.card i { font-size: 22px; margin-bottom: 8px; display: block; color: #357ABD; }
 
-/* --- Boutons “Voir détails” avec gradient bleu nuit → bleu → rose --- */
+/* --- Boutons --- */
 .card button, .actions-rapides button {
     padding: 8px 14px;
     border: none;
     border-radius: 8px;
-      background: linear-gradient(90deg, #3498db, #5dade2, #f8fafd, #f7e7d0); /* bleu → bleu ciel → blanc → beige */
-    color: #1b263b;
+     background: linear-gradient(135deg, #0F172A, #2563EB, #38BDF8);
+    color: #f5f6f7;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
@@ -85,8 +138,9 @@ canvas { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px
 /* --- Table notifications --- */
 .notifications table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 0.9em; }
 .notifications th, .notifications td { padding: 10px 12px; text-align: left; }
-.notifications th { background: #357ABD; color: white; }
+.notifications th { background: #5dade2; color: white; }
 .notifications tr:nth-child(even) { background: #f7f9fc; }
+
 
 /* --- Responsive --- */
 @media (max-width: 900px) {
@@ -97,70 +151,80 @@ canvas { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px
     aside a { flex: 1; text-align: center; margin-bottom: 0; margin-right: 8px; }
     main { padding: 15px; }
     .stats, .actions-rapides { flex-direction: column; }
+
+
 }
 </style>
 </head>
 <body>
 
 <aside id="sidebar">
-    <h2>🏠 RentMaster</h2>
-    <a href="dashboard.html">📊 Dashboard</a>
-    <a href="bien.html">🏘️ Biens</a>
-    <a href="locataire.html">🧑‍💼 Locataires</a>
-    <a href="contrat.html">📝 Contrats</a>
-    <a href="paiement.html">💰 Paiement</a>
-    <a href="profil.html">👤 Profil</a>
-    <button id="toggleSidebar">☰</button>
+   <h2><i class="fas fa-home"></i> RentMaster</h2>
+<a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+<a href="bien.html"><i class="fas fa-building"></i> Biens</a>
+<a href="locataire.html"><i class="fas fa-users"></i> Locataires</a>
+<a href="contrat.html"><i class="fas fa-file-contract"></i> Contrats</a>
+<a href="paiement.html"><i class="fas fa-credit-card"></i> Paiement</a>
+<a href="profil.html"><i class="fas fa-user"></i> Profil</a> 
+<button id="toggleSidebar">☰</button>
 </aside>
 
 <main>
-    <h1>Dashboard</h1>
+<h1>Dashboard</h1>
 
-    <div class="stats">
-        <div class="card" id="cardBiens">🏘️
-            <h3>Biens</h3>
-            <p id="nbBiens">0</p>
-            <button onclick="window.location='bien.html'">Voir détails</button>
-        </div>
-        <div class="card" id="cardLocataires">🧑‍💼
-            <h3>Locataires</h3>
-            <p id="nbLocataires">0</p>
-            <button onclick="window.location='locataire.html'">Voir détails</button>
-        </div>
-        <div class="card" id="cardContrats">📝
-            <h3>Contrats actifs</h3>
-            <p id="nbContrats">0</p>
-            <button onclick="window.location='contrat.html'">Voir détails</button>
-        </div>
-        <div class="card" id="cardPaiements">💰
-            <h3>Paiements en retard</h3>
-            <p id="nbPaiements">0</p>
-            <button onclick="window.location='paiement.html'">Voir détails</button>
-        </div>
-    </div>
+<div class="stats">
+<div class="card" id="cardBiens">
+<i class="fas fa-building"></i>
+<h3>Biens</h3>
+<p id="nbBiens">0</p>
+<button onclick="window.location='bien.html'">Voir détails</button>
+</div>
 
-    <h2>Revenus par mois 💵</h2>
-    <canvas id="revenusChart" width="130" height="40"></canvas>
+<div class="card" id="cardLocataires">
+<i class="fas fa-users"></i>
+<h3>Locataires</h3>
+<p id="nbLocataires">0</p>
+<button onclick="window.location='locataire.html'">Voir détails</button>
+</div>
 
-    <h2>Taux d’occupation 📈</h2>
-    <canvas id="occupationChart" width="150" height="40"></canvas>
+<div class="card" id="cardContrats">
+<i class="fas fa-file-contract"></i>
+<h3>Contrats actifs</h3>
+<p id="nbContrats">0</p>
+<button onclick="window.location='contrat.html'">Voir détails</button>
+</div>
 
-    <div class="notifications">
-        <h2>Dernières actions 📨</h2>
-        <table>
-            <thead>
-                <tr><th>Action</th><th>Date</th></tr>
-            </thead>
-            <tbody id="tableNotifications"></tbody>
-        </table>
-    </div>
+<div class="card" id="cardPaiements">
+<i class="fas fa-credit-card"></i>
+<h3>Paiements en retard</h3>
+<p id="nbPaiements">0</p>
+<button onclick="window.location='paiement.html'">Voir détails</button>
+</div>
+</div>
+<div class="carousel-section">
+  <h2 class="carousel-title">    RentMaster vous permet de suivre vos biens, locataires et revenus en temps réel</h2>
+  <div class="house-carousel">
+      <div class="house-slide"><img src="maison1.jpeg" alt="Maison 1"></div>
+      <div class="house-slide"><img src="maison2.jpeg" alt="Maison 2"></div>
+      <div class="house-slide"><img src="maison3.jpeg" alt="Maison 3"></div>
+      <div class="house-slide"><img src="maison4.jpeg" alt="Maison 4"></div>
+      <div class="house-slide"><img src="maison5.jpeg" alt="Maison 5"></div>
+  </div>
+</div>
+<h2><i class="fas fa-chart-column"></i> Revenus par mois</h2>
+<canvas id="revenusChart"></canvas>
 
-    <div class="actions-rapides">
-        <button onclick="window.location='dashboard.html#formAjoutBien'">➕ Ajouter un bien</button>
-        <button onclick="window.location='dashboard.html#formAjoutLoc'">➕ Ajouter un locataire</button>
-        <button onclick="window.location='contrat.html'">➕ Créer un contrat</button>
-        <button onclick="window.location='paiement.html'">➕ Effectuer un paiement</button>
-    </div>
+<div class="notifications">
+<h2><i class="fas fa-bell"></i> Dernières actions</h2>
+<table>
+<thead>
+<tr><th>Action</th><th>Date</th></tr>
+</thead>
+<tbody id="tableNotifications"></tbody>
+</table>
+</div>
+
+
 </main>
 
 <script>
@@ -192,22 +256,20 @@ function afficherNotifications() {
 
   locataires.slice(-3).forEach(l => {
     const row = tbody.insertRow();
-    row.insertCell(0).innerText = "🧑 Nouveau locataire : " + l.nom;
+    row.insertCell(0).innerText = " Nouveau locataire : " + l.nom;
     row.insertCell(1).innerText = new Date().toLocaleDateString();
   });
 
   paiements.slice(-3).forEach(p => {
     const row = tbody.insertRow();
-    row.insertCell(0).innerText = "💵 Paiement : " + p.contrat + " - " + p.montant + "$";
+    row.insertCell(0).innerText = " Paiement : " + p.contrat + " - " + p.montant + "$";
     row.insertCell(1).innerText = p.date;
   });
 }
 
 // --- Graphiques ---
 function afficherGraphiques() {
-  const contrats = JSON.parse(localStorage.getItem("contrats")) || [];
   const paiements = JSON.parse(localStorage.getItem("paiements")) || [];
-
   const labels = ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"];
   const revenus = Array(12).fill(0);
   paiements.forEach(p => {
@@ -217,16 +279,8 @@ function afficherGraphiques() {
 
   new Chart(document.getElementById('revenusChart'), {
     type: 'bar',
-    data: { labels, datasets: [{ label: 'Revenus $', data: revenus, backgroundColor: 'rgba(54,162,235,0.5)' }] }
-  });
-
-  const biens = JSON.parse(localStorage.getItem("biens")) || [];
-  const occupes = contrats.length;
-  const libres = biens.length - occupes;
-  new Chart(document.getElementById('occupationChart'), {
-    type: 'doughnut',
-    data: { labels: ['Occupés','Vacants'], datasets: [{ data: [occupes, libres], backgroundColor: ['#36A2EB','#FFCE56'] }] },
-    options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10 } } } }
+    data: { labels, datasets: [{ label: 'Revenus $', data: revenus, backgroundColor: 'rgba(54,162,235,0.5)' }] },
+    options: { responsive: true, plugins: { legend: { display: false } } }
   });
 }
 
@@ -241,5 +295,6 @@ window.onload = function() {
   afficherGraphiques();
 }
 </script>
+ 
 </body>
 </html>
