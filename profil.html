@@ -2,280 +2,159 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Profil - RentMaster</title>
+<title>Paramètres - RentMaster</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-/* --- Reset et base --- */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    background-image: url('fond.png'); /* Image de fond */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: #1b263b; /* texte bleu foncé */
-}
-
-/* --- Navigation --- */
-nav a {
-    margin-right: 15px;
-    text-decoration: none;
-    color: #1b263b; /* bleu foncé */
-    font-weight: 500;
-    transition: color 0.3s, transform 0.3s;
-}
-nav a:hover {
-    color: #5dade2; /* bleu ciel doux */
-    transform: translateY(-2px);
-}
-
-/* --- Formulaire Profil --- */
-#formProfil {
-    background: rgba(255,255,255,0.9); /* semi-transparent pour fond */
-    padding: 25px;
-    border-radius: 12px;
-    width: 400px;
-    max-width: 90%;
-    margin-bottom: 30px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
-
-#formProfil h2 {
-    margin-bottom: 15px;
-    color: #1b263b;
-    border-bottom: 2px solid #3498db; /* bleu intermédiaire */
-    padding-bottom: 5px;
-}
-main {
-    display: flex;
-    flex-direction: column; /* empile formProfil et stats verticalement */
-    align-items: center;    /* centre horizontalement */
-    justify-content: flex-start; /* tu peux mettre center pour centrer verticalement aussi */
-    gap: 20px;              /* espace entre le formulaire et les stats */
-    min-height: calc(100vh - 40px); /* occupe presque toute la hauteur */
-}
-
-/* --- Inputs & selects --- */
-input, select {
-    padding: 10px;
-    margin: 5px 0 15px 0;
-    width: 100%;
-    border: 1px solid #b0c4de;
-    border-radius: 6px;
-    outline: none;
-    transition: all 0.3s;
-    background: rgba(255,255,255,0.85);
-}
-input:focus, select:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 10px rgba(52,152,219,0.3);
-}
-
-/* --- Checkboxes --- */
-.option-checkbox {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.option-checkbox input {
-    width: auto;
-    margin-right: 10px;
-}
-
-/* --- Boutons --- */
-button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #3498db, #5dade2, #d3e6f6, #fbeef4); 
-    color: #1b263b;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(52,152,219,0.2);
-}
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(52,152,219,0.35);
-    opacity: 0.95;
-}
-
-/* --- Statistiques --- */
-#stats {
-    background: rgba(255,255,255,0.9);
-    padding: 20px;
-    border-radius: 12px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
-#stats h2 {
-    border-bottom: 2px solid #3498db;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-#deconnexionBtn {
-    padding: 8px 16px;
-    margin-left: 20px;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #e74c3c, #f1948a); 
+* { box-sizing: border-box; margin:0; padding:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background: #f0f2f5; display: flex; min-height: 100vh; }
+aside {
+    width: 220px;
+    background: linear-gradient(to bottom, #2e21e6, #40affe, #85c1e9);
     color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
 }
-#deconnexionBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(231,76,60,0.35);
-    opacity: 0.95;
+aside a { color:white; text-decoration:none; margin-bottom:10px; display:block; }
+aside a i { margin-right:8px; }
+main { flex:1; padding:30px; overflow-y:auto; }
+h1 { margin-bottom:20px; color:#34495e; }
+
+/* Onglets */
+.tabs { display:flex; gap:10px; margin-bottom:20px; }
+.tab-btn {
+    padding:10px 20px;
+    border:none;
+    border-radius:10px 10px 0 0;
+    background:#d0e1ff;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
 }
-/* --- Footer --- */
-footer {
-    background: rgba(255,255,255,0.9); /* semi-transparent pour fond */
-    color: #1b263b; /* texte bleu foncé */
-    text-align: center;
-    padding: 15px 20px;
-    border-top: 2px solid #3498db; /* trait bleu intermédiaire */
-    border-radius: 8px 8px 0 0;
-    margin-top: 30px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-    font-size: 0.9em;
+.tab-btn.active { background:#357ABD; color:white; }
+.tab-content { display:none; background:white; padding:20px; border-radius:0 10px 10px 10px; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+.tab-content.active { display:block; }
+
+/* Formulaires Informations */
+.info-form { display:flex; flex-direction:column; gap:10px; }
+.info-form label { font-weight:600; }
+.info-form input { width:100%; padding:8px; border-radius:8px; border:1px solid #ccc; }
+.info-form button {
+    margin-top:10px; padding:10px 20px;
+    background:#357ABD; color:white; border:none; border-radius:8px;
+    cursor:pointer; font-weight:bold;
+}
+.info-form button:hover { opacity:0.9; }
+
+/* Photo bailleur */
+.photo-bailleur {
+    width:120px; height:120px; border-radius:50%; border:2px solid #357ABD;
+    margin-bottom:15px; object-fit:cover;
 }
 
-footer a {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-footer a:hover {
-    color: #5dade2;
-}
-/* --- Responsive --- */
-@media (max-width: 900px) {
-    #formProfil, #stats { width: 95%; }
-    nav a { display: block; margin-bottom: 5px; }
+/* Paramètres */
+.settings label { display:block; margin-top:10px; }
+.settings select, .settings input { margin-top:5px; }
+
+/* Responsive */
+@media (max-width:900px) {
+    body { flex-direction:column; }
+    aside { width:100%; flex-direction:row; overflow-x:auto; padding:10px; }
+    aside a { flex:1; text-align:center; margin-bottom:0; margin-right:8px; }
 }
 </style>
 </head>
 <body>
-<h1>Mon Profil</h1>
 
-<nav>
-    <a href="dashboard.html">Dashboard</a>
-</nav>
+<!-- Sidebar -->
+<aside>
+   <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+   <a href="index.html">❌ Déconnexion</a> 
+</aside>
+
 <main>
-<div id="formProfil">
+<h1>Paramètres</h1>
+
+<!-- Onglets -->
+<div class="tabs">
+    <button class="tab-btn active" data-tab="apropos"><i class="fas fa-info-circle"></i> À propos / Guide</button>
+    <button class="tab-btn" data-tab="info"><i class="fas fa-user"></i> Informations</button>
+    <button class="tab-btn" data-tab="parametres"><i class="fas fa-cog"></i> Paramètres</button>
+</div>
+
+<!-- Contenus -->
+<div id="apropos" class="tab-content active">
+    <h2>À propos</h2>
+    <p><strong>RentMaster</strong> est une application de gestion immobilière créée par <strong>Divine Katende</strong>. Elle vous aide à gérer vos biens, locataires, contrats et paiements facilement.</p>
+    
+    <h2>Guide d'utilisation</h2>
+    <ul>
+        <li><strong>Dashboard :</strong> Vue générale, statistiques et dernières actions.</li>
+        <li><strong>Biens :</strong> Ajouter, modifier ou supprimer vos biens immobiliers.</li>
+        <li><strong>Locataires :</strong> Gérer les informations de vos locataires.</li>
+        <li><strong>Contrats :</strong> Créer et suivre vos contrats de location.</li>
+        <li><strong>Paiements :</strong> Enregistrer et suivre les paiements des locataires.</li>
+        <li><strong>Messages :</strong> Envoyer et recevoir des messages des locataires.</li>
+        <li><strong>Notifications :</strong> Suivre paiements en retard ou actions importantes.</li>
+    </ul>
+</div>
+
+<div id="info" class="tab-content">
     <h2>Informations personnelles</h2>
-    <label>Nom :</label>
-    <input type="text" id="nom">
-    <label>Email :</label>
-    <input type="email" id="email">
-    <label>Mot de passe actuel :</label>
-    <input type="password" id="currentPassword">
-    <label>Nouveau mot de passe :</label>
-    <input type="password" id="newPassword">
+    <img src="profil.jpeg" alt="Photo bailleur" class="photo-bailleur" id="photoPreview">
+    <form class="info-form">
+        <label for="photo">Changer la photo :</label>
+        <input type="file" id="photo">
+        
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" placeholder="Votre nom">
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Votre email">
+        
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" placeholder="Mot de passe">
+        
+        <button type="submit">Mettre à jour</button>
+    </form>
+</div>
 
+<div id="parametres" class="tab-content">
     <h2>Paramètres</h2>
-    <label>Thème :</label>
-    <select id="theme">
-        <option value="clair">Clair</option>
-        <option value="sombre">Sombre</option>
-    </select>
-
-    <div class="option-checkbox">
-        <input type="checkbox" id="notifications">
-        <label for="notifications">Activer les notifications</label>
+    <div class="settings">
+        <label><input type="checkbox" id="notifCheck"> Activer les notifications</label>
+        <label><input type="checkbox" id="darkMode"> Mode sombre</label>
+        <label for="langue">Langue :</label>
+        <select id="langue">
+            <option value="fr">Français</option>
+            <option value="en">Anglais</option>
+        </select>
     </div>
-
-    <div class="option-checkbox">
-        <input type="checkbox" id="newsletter">
-        <label for="newsletter">Recevoir la newsletter</label>
-    </div>
-
-    <button onclick="enregistrerProfil()">Enregistrer</button>
 </div>
 
-<div id="stats">
-    <h2>Statistiques rapides</h2>
-    <p>Nombre de Biens : <span id="nbBiens">0</span></p>
-    <p>Nombre de Locataires : <span id="nbLocataires">0</span></p>
-    <p>Nombre de Contrats : <span id="nbContrats">0</span></p>
-</div>
-</main>
-<nav>
-    <a href="dashboard.html">Dashboard</a>
-    <button id="deconnexionBtn" onclick="deconnexion()">Déconnexion</button>
-</nav>
-<footer>
-  <p>&copy; 2026 RentMaster. Tous droits réservés.</p>
-  <p>
-    Contact : <a href="mailto:divinekatende23@gmail.com">divinekatende23@gmail.com</a> | 
-    Portfolio : <a href="https://divinekatende.github.io/DIVKT/" target="_blank">Mon Portfolio</a>
-  </p>
-</footer>
 <script>
-// --- Données simulées ---
-let user = JSON.parse(localStorage.getItem("user")) || {
-  nom:"Bailleur",
-  email:"bailleur@email.com",
-  password:"123456",
-  theme:"clair",
-  notifications:true,
-  newsletter:false
-};
+// Onglets
+const tabs = document.querySelectorAll(".tab-btn");
+const contents = document.querySelectorAll(".tab-content");
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        contents.forEach(c => c.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
+    });
+});
 
-let biens = JSON.parse(localStorage.getItem("biens")) || [];
-let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
-let contrats = JSON.parse(localStorage.getItem("contrats")) || [];
-
-// --- Initialisation ---
-document.getElementById("nom").value = user.nom;
-document.getElementById("email").value = user.email;
-document.getElementById("theme").value = user.theme;
-document.getElementById("notifications").checked = user.notifications;
-document.getElementById("newsletter").checked = user.newsletter;
-
-document.getElementById("nbBiens").innerText = biens.length;
-document.getElementById("nbLocataires").innerText = locataires.length;
-document.getElementById("nbContrats").innerText = contrats.length;
-
-function enregistrerProfil() {
-    const nom = document.getElementById("nom").value;
-    const email = document.getElementById("email").value;
-    const currentPassword = document.getElementById("currentPassword").value;
-    const newPassword = document.getElementById("newPassword").value;
-    const theme = document.getElementById("theme").value;
-    const notifications = document.getElementById("notifications").checked;
-    const newsletter = document.getElementById("newsletter").checked;
-
-    if(!nom || !email){ alert("Nom et Email obligatoires !"); return; }
-    if(currentPassword && currentPassword !== user.password){
-        alert("Mot de passe actuel incorrect !");
-        return;
+// Aperçu photo bailleur
+const photoInput = document.getElementById('photo');
+const photoPreview = document.getElementById('photoPreview');
+photoInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if(file){
+        photoPreview.src = URL.createObjectURL(file);
     }
-
-    user.nom = nom;
-    user.email = email;
-    if(newPassword) user.password = newPassword;
-    user.theme = theme;
-    user.notifications = notifications;
-    user.newsletter = newsletter;
-
-    localStorage.setItem("user", JSON.stringify(user));
-    alert("Profil mis à jour !");
-    document.getElementById("currentPassword").value = '';
-    document.getElementById("newPassword").value = '';
-}
-
-// --- Déconnexion ---
-function deconnexion() {
-    // Ici, on peut aussi supprimer les données de session si nécessaire
-    // localStorage.removeItem("user"); // si tu veux supprimer les infos de l'utilisateur
-    window.location.href = "index.html";
-}
-
+});
 </script>
+
 </body>
 </html>

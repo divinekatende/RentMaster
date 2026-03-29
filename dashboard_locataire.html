@@ -3,7 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <title>Dashboard Locataire</title>
-<link rel="stylesheet" href="dash.css">
+
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    /* Image de fond */
+    background-image: url('fond3.png'); /* remplace par ton image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #1b263b; /* texte bleu foncé */
+}
+
+
+/* HEADER */
+header {
+    background: linear-gradient(90deg, #0c0384, #3f31fc, #2c6ff5, #030664);
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+/* NAV */
+nav {
+  background: white;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #3498db;
+  font-weight: 500;
+}
+
+/* CONTAINER */
+.container {
+  padding: 20px;
+  padding-bottom: 80px; /* espace pour footer */
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.card p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* BOUTON */
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #3498db;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #2980b9;
+}
+
+/* FOOTER MENU (IMPORTANT) */
+.footer-menu {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.footer-menu a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-size: 14px;
+  text-align: center;
+}
+
+.footer-menu span {
+  display: block;
+  font-size: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -14,39 +125,57 @@
 
 <nav>
   <a href="dashboard_locataire.html">Dashboard</a>
-  <a href="contrat_locataire.html">Mon contrat</a>
+  <a href="contrat_locataire.html">Contrat</a>
   <a href="paiement_locataire.html">Paiement</a>
   <a href="historique.html">Historique</a>
   <a href="profil_locataire.html">Profil</a>
-    <a href="index.html">❌ Deconnexion</a>
+  <a href="index.html">❌ Déconnexion</a>
 </nav>
 
 <div class="container">
 
-  <p id="bienvenue"></p>
+  <h3 id="bienvenue"></h3>
 
-  <div class="card">
-    <h3>Loyer à payer</h3>
-    <p>500$</p>
+  <div class="cards">
+    <div class="card">
+      <h3>Loyer à payer</h3>
+      <p>500$</p>
+    </div>
+
+    <div class="card">
+      <h3>Prochaine échéance</h3>
+      <p>05 Avril 2026</p>
+    </div>
+
+    <div class="card">
+      <h3>Statut</h3>
+      <p style="color:red;">Non payé</p>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>Prochaine échéance</h3>
-    <p>05 Avril 2026</p>
-  </div>
-
-  <div class="card">
-    <h3>Statut</h3>
-    <p>Non payé</p>
-  </div>
-
-  <button onclick="window.location.href='paiement_locataire.html'">
-    Payer maintenant
+  <button class="btn" onclick="window.location.href='paiement_locataire.html'">
+    💳 Payer maintenant
   </button>
 
 </div>
 
-<script src="init.js"></script>
+<!-- MENU BAS -->
+<div class="footer-menu">
+  <a href="message_locataire.html">
+    <span>💬</span>
+    Messages
+  </a>
+
+  <a href="notification_locataire.html">
+    <span>🔔</span>
+    Notifications
+  </a>
+
+  <a href="guide.html">
+    <span>📘</span>
+    Guide
+  </a>
+</div>
 
 <script>
 // sécurité
@@ -54,13 +183,23 @@ if (localStorage.getItem("connecte") !== "true") {
     window.location.href = "login.html";
 }
 
-// récupérer le locataire connecté
-let locataires = JSON.parse(localStorage.getItem("locataires"));
+// récupérer locataire
+let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
 let userId = localStorage.getItem("userId");
 let locataire = locataires.find(l => l.id == userId);
 
-// afficher le message de bienvenue
-document.getElementById("bienvenue").innerText = `Bonjour ${locataire.nom}`;
+// bienvenue
+document.getElementById("bienvenue").innerText =
+  locataire ? `Bonjour ${locataire.nom}` : "Bonjour";
+  let notifications = JSON.parse(localStorage.getItem("notifications")) || [];
+
+let badge = document.getElementById("badgeNotif");
+
+if(notifications.length > 0){
+  badge.innerText = notifications.length;
+}else{
+  badge.style.display = "none";
+}
 </script>
 
 </body>

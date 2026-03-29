@@ -3,7 +3,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 20px;
     /* Image de fond */
-    background-image: url('fond.png'); /* remplace par ton image */
+    background-image: url('fond3.png'); /* remplace par ton image */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -90,18 +90,90 @@ tr:hover {
 .maintenance { color: #f39c12; font-weight: bold; }  /* orange pour maintenance */
 
 /* --- Formulaire d'ajout/modification --- */
+/* --- FORMULAIRE MODERNE --- */
 #formAjout {
     display: none;
-    margin-top: 20px;
-    border: 1px solid #b0c4de;
-    padding: 20px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.9); /* semi-transparent pour mieux voir le fond */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 15px;
+    
+    /* effet glassmorphism 🔥 */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+    max-width: 500px;
+    animation: fadeIn 0.4s ease;
 }
+
 #formAjout h2 {
-    margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0a1f44;
+    font-size: 1.4em;
+}
+
+/* --- STRUCTURE FORMULAIRE --- */
+#formAjout label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
     color: #1b263b;
+}
+
+/* Champs alignés proprement */
+#formAjout input,
+#formAjout select,
+#formAjout textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #b0c4de;
+    
+    background: rgba(255,255,255,0.9);
+    transition: all 0.3s;
+}
+
+/* Focus amélioré */
+#formAjout input:focus,
+#formAjout select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 10px rgba(37,99,235,0.3);
+    transform: scale(1.02);
+}
+
+/* --- BOUTONS DU FORMULAIRE --- */
+#formAjout button {
+    width: 48%;
+    margin-top: 15px;
+}
+
+/* alignement boutons */
+#formAjout .btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* bouton annuler */
+#formAjout button:last-child {
+    background: linear-gradient(135deg, #e74c3c, #ff7675);
+    color: white;
+}
+
+/* --- ANIMATION --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* --- Images --- */

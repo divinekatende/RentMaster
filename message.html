@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Messages - RentMaster</title>
+
+<style>
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    /* Image de fond */
+    background-image: url('fond3.png'); /* remplace par ton image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #1b263b; /* texte bleu foncé */
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Navigation */
+nav a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Chat */
+#chatContainer {
+  border: 1px solid #dcdde1;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 600px;
+  height: 400px;
+  overflow-y: auto;
+  background: #f8fbff;
+  margin-bottom: 10px;
+}
+
+/* Messages */
+.message {
+  padding: 10px;
+  border-radius: 12px;
+  margin: 8px 0;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+
+/* Propriétaire */
+.proprietaire {
+  background-color: #d6ecff;
+  text-align: right;
+  margin-left: auto;
+  border: 1px solid #3498db;
+}
+
+/* Locataire */
+.locataire {
+  background-color: #ffffff;
+  text-align: left;
+  margin-right: auto;
+  border: 1px solid #ccc;
+}
+
+/* Nom + direction */
+.info-msg {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+/* Date */
+.date-msg {
+  font-size: 10px;
+  color: #999;
+  margin-top: 5px;
+  text-align: right;
+}
+
+/* Formulaire */
+#formMessage {
+  display: flex;
+  max-width: 600px;
+}
+
+#formMessage select,
+#formMessage textarea {
+  margin-right: 5px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#formMessage textarea {
+  flex: 1;
+  resize: none;
+}
+
+#formMessage button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+#formMessage button:hover {
+  background: #2980b9;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Messages 💬</h1>
+
+<nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="contrat.html">Contrats</a>
+  <a href="message.html"> 💬 Messages </a>
+  <a href="notification.html">🔔 Notifications </a>
+</nav>
+
+<div id="chatContainer">
+  <p style="text-align:center; color:#888;">Aucun message pour l'instant</p>
+</div>
+
+<div id="formMessage">
+  <select id="locataireSelect"></select>
+  <textarea id="messageText" rows="2" placeholder="Écrire un message..."></textarea>
+  <button onclick="envoyerMessage()">Envoyer</button>
+</div>
+
+<script>
+// Données
+let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
+let messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+const nomProprietaire = "Propriétaire";
+
+// Test si vide
+if(locataires.length === 0){
+  locataires = [
+    {id: 1, nom: "Ketsia", prenom: "Divine"},
+    {id: 2, nom: "Jean", prenom: "Paul"}
+  ];
+  localStorage.setItem("locataires", JSON.stringify(locataires));
+}
+
+// Remplir select
+const locSelect = document.getElementById('locataireSelect');
+locataires.forEach(l => {
+  locSelect.innerHTML += `<option value="${l.id}">${l.nom} ${l.prenom}</option>`;
+});
+
+// Affichage messages
+function afficherMessages() {
+  const container = document.getElementById('chatContainer');
+  container.innerHTML = "";
+
+  if(messages.length === 0) {
+    container.innerHTML = '<p style="text-align:center; color:#888;">Aucun message pour l\'instant</p>';
+    return;
+  }
+
+  messages.forEach(m => {
+    const div = document.createElement('div');
+    div.classList.add('message');
+    div.classList.add(m.deNom === nomProprietaire ? 'proprietaire' : 'locataire');
+
+    div.innerHTML = `
+      <div class="info-msg">
+        <strong>${m.deNom}</strong> → <strong>${m.aNom}</strong>
+      </div>
+      ${m.text}
+      <div class="date-msg">${m.date}</div>
+    `;
+
+    container.appendChild(div);
+  });
+
+  container.scrollTop = container.scrollHeight;
+}
+
+// Envoyer message
+function envoyerMessage() {
+  const locId = locSelect.value;
+  const texte = document.getElementById('messageText').value;
+
+  if(!locId || !texte) {
+    alert("Sélectionne un locataire et écris un message !");
+    return;
+  }
+
+  const loc = locataires.find(l => l.id == locId);
+
+  const newMessage = {
+    deNom: nomProprietaire,
+    aLocataireId: locId,
+    aNom: loc.nom + " " + loc.prenom,
+    text: texte,
+    date: new Date().toLocaleString()
+  };
+
+  messages.push(newMessage);
+  localStorage.setItem("messages", JSON.stringify(messages));
+
+  document.getElementById('messageText').value = "";
+  afficherMessages();
+}
+
+// Initialisation
+afficherMessages();
+</script>
+
+</body>
+</html>

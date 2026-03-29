@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Notifications - RentMaster</title>
+<link rel="stylesheet" href="bien.css">
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h1 { margin-bottom: 20px; }
+  nav a { margin-right: 10px; text-decoration: none; color: #007bff; }
+
+  /* Container général des notifications */
+  #notifContainer {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 600px;
+    height: 400px;
+    overflow-y: auto;
+    background: #f2f2f2;
+    margin-bottom: 10px;
+  }
+
+  /* Bulles de notification */
+  .notification {
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin: 5px 0;
+    max-width: 90%;
+    word-wrap: break-word;
+  }
+
+  .paiementRecu {
+    background-color: #d4edda; /* vert clair */
+    border-left: 5px solid #28a745;
+  }
+
+  .retard {
+    background-color: #f8d7da; /* rouge clair */
+    border-left: 5px solid #dc3545;
+  }
+
+  .info {
+    background-color: #d1ecf1; /* bleu clair */
+    border-left: 5px solid #17a2b8;
+  }
+
+</style>
+</head>
+<body>
+<h1>Notifications 🔔</h1>
+
+<nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="contrat.html">Contrats</a>
+  <a href="message.html">  💬 Messages</a>
+    <a href="notification.html">🔔 Notifications </a>
+</nav>
+
+<div id="notifContainer">
+  <p style="text-align:center; color:#888;">Aucune notification pour l'instant</p>
+</div>
+
+<script>
+let notifications = JSON.parse(localStorage.getItem("notifications")) || [];
+
+// Fonction pour afficher les notifications
+function afficherNotifications() {
+  const container = document.getElementById('notifContainer');
+  container.innerHTML = "";
+  if(notifications.length === 0) {
+    container.innerHTML = '<p style="text-align:center; color:#888;">Aucune notification pour l\'instant</p>';
+    return;
+  }
+
+  notifications.forEach(n => {
+    const div = document.createElement('div');
+    div.classList.add('notification');
+    if(n.type === "paiementRecu") div.classList.add('paiementRecu');
+    else if(n.type === "retard") div.classList.add('retard');
+    else div.classList.add('info');
+
+    div.innerHTML = `<strong>${n.titre}:</strong> ${n.message} <small style="float:right; color:#555;">${n.date}</small>`;
+    container.appendChild(div);
+  });
+
+  container.scrollTop = container.scrollHeight; // Scroll automatique
+}
+
+// Exemple d’ajout de notification (test)
+function ajouterNotification(titre, message, type) {
+  const newNotif = { titre, message, type, date: new Date().toLocaleString() };
+  notifications.push(newNotif);
+  localStorage.setItem("notifications", JSON.stringify(notifications));
+  afficherNotifications();
+}
+
+// Affichage initial
+afficherNotifications();
+
+// Exemples : tu peux commenter ces lignes après test
+// ajouterNotification("Paiement reçu", "Le locataire Jean Dupont a payé 500$", "paiementRecu");
+// ajouterNotification("Retard", "Le locataire Marie Curie n'a pas payé son loyer", "retard");
+// ajouterNotification("Info", "Nouvelle mise à jour de votre application disponible", "info");
+
+</script>
+</body>
+</html>

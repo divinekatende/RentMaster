@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Gestion des Contrats - RentMaster</title>
- <link rel="stylesheet" href="bien.css">
+<link rel="stylesheet" href="bien.css">
 </head>
 <body>
 <h1>Gestion des Contrats</h1>
@@ -25,6 +25,7 @@
       <th>Bien</th>
       <th>Locataire</th>
       <th>Loyer</th>
+      <th>Charges</th>
       <th>Date début</th>
       <th>Date fin</th>
       <th>Statut</th>
@@ -42,6 +43,15 @@
   <select id="locataireSelect"></select><br>
   <label>Loyer :</label>
   <input type="number" id="loyer" min="0"><br>
+
+  <h3>Charges</h3>
+  <label>Eau :</label>
+  <input type="number" id="eau" min="0" placeholder="0"><br>
+  <label>Électricité :</label>
+  <input type="number" id="electricite" min="0" placeholder="0"><br>
+  <label>Internet :</label>
+  <input type="number" id="internet" min="0" placeholder="0"><br>
+
   <label>Date début :</label>
   <input type="date" id="dateDebut"><br>
   <label>Date fin :</label>
@@ -54,6 +64,7 @@
   <button id="btnAjouter" onclick="ajouterContrat()">Ajouter</button>
   <button onclick="annulerForm()">Annuler</button>
 </div>
+
 <footer>
   <p>&copy; 2026 RentMaster. Tous droits réservés.</p>
   <p>
@@ -84,15 +95,19 @@ function afficherContrats() {
   contrats.forEach((c, index) => {
     const row = table.insertRow();
     const bien = biens.find(b => b.id == c.bienId)?.nom || "Supprimé";
-    const loc = locataires.find(l => l.id == c.locataireId)?.nom + " " + locataires.find(l => l.id == c.locataireId)?.prenom || "Supprimé";
+    const locObj = locataires.find(l => l.id == c.locataireId);
+    const loc = locObj ? locObj.nom + " " + locObj.prenom : "Supprimé";
+    const charges = `Eau:${c.charges?.eau || 0} $ - Élec:${c.charges?.electricite || 0} $ - Internet:${c.charges?.internet || 0} $`;
+
     row.insertCell(0).innerText = c.id;
     row.insertCell(1).innerText = bien;
     row.insertCell(2).innerText = loc;
     row.insertCell(3).innerText = c.loyer;
-    row.insertCell(4).innerText = c.dateDebut;
-    row.insertCell(5).innerText = c.dateFin;
-    row.insertCell(6).innerText = c.statut;
-    const actionsCell = row.insertCell(7);
+    row.insertCell(4).innerText = charges;
+    row.insertCell(5).innerText = c.dateDebut;
+    row.insertCell(6).innerText = c.dateFin;
+    row.insertCell(7).innerText = c.statut;
+    const actionsCell = row.insertCell(8);
     actionsCell.innerHTML = `<button onclick="modifierContrat(${index})">Modifier</button>
                              <button onclick="supprimerContrat(${index})">Supprimer</button>`;
   });
@@ -105,14 +120,18 @@ function ajouterContrat() {
   const dateDebut = document.getElementById('dateDebut').value;
   const dateFin = document.getElementById('dateFin').value;
   const statut = document.getElementById('statut').value;
+  const eau = document.getElementById('eau').value || 0;
+  const electricite = document.getElementById('electricite').value || 0;
+  const internet = document.getElementById('internet').value || 0;
 
   if(!bienId || !locId || !loyer || !dateDebut || !dateFin) { alert("Remplis tous les champs !"); return; }
 
+  const newContrat = { id: contrats.length + 1, bienId, locataireId: locId, loyer, dateDebut, dateFin, statut, charges:{eau, electricite, internet} };
+
   if(editIndex >= 0) {
-    contrats[editIndex] = { ...contrats[editIndex], bienId, locataireId: locId, loyer, dateDebut, dateFin, statut };
+    contrats[editIndex] = { ...contrats[editIndex], ...newContrat };
     editIndex = -1;
   } else {
-    const newContrat = { id: contrats.length + 1, bienId, locataireId: locId, loyer, dateDebut, dateFin, statut };
     contrats.push(newContrat);
   }
   localStorage.setItem("contrats", JSON.stringify(contrats));
@@ -129,6 +148,9 @@ function modifierContrat(index) {
   document.getElementById('dateDebut').value = c.dateDebut;
   document.getElementById('dateFin').value = c.dateFin;
   document.getElementById('statut').value = c.statut;
+  document.getElementById('eau').value = c.charges?.eau || 0;
+  document.getElementById('electricite').value = c.charges?.electricite || 0;
+  document.getElementById('internet').value = c.charges?.internet || 0;
   document.getElementById('formTitle').innerText = "Modifier un contrat";
   document.getElementById('btnAjouter').innerText = "Enregistrer";
   document.getElementById('formAjout').style.display='block';
@@ -147,6 +169,9 @@ function annulerForm() {
   document.getElementById('loyer').value='';
   document.getElementById('dateDebut').value='';
   document.getElementById('dateFin').value='';
+  document.getElementById('eau').value='';
+  document.getElementById('electricite').value='';
+  document.getElementById('internet').value='';
   editIndex=-1;
   document.getElementById('btnAjouter').innerText="Ajouter";
   document.getElementById('formTitle').innerText="Ajouter un contrat";
