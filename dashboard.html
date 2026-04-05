@@ -2,287 +2,265 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Dashboard - RentMaster</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-/* --- Reset et base --- */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { display: flex; min-height: 100vh; background: #f0f2f5; transition: all 0.3s; }
-
-/* --- Sidebar --- */
-aside {
-    width: 220px;
-    background: linear-gradient(to bottom, #2e21e6, #40affe, #85c1e9);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    transition: all 0.3s;
-}
-aside i { margin-right: 8px; }
-aside.collapsed { width: 60px; }
-aside h2 { font-size: 1.5em; margin-bottom: 20px; text-align: center; }
-aside.collapsed h2 { display: none; }
-aside a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 12px;
-    margin-bottom: 8px;
-    border-radius: 8px;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: 0.3s;
-}
-aside a:hover { background: rgba(255,255,255,0.2); }
-#toggleSidebar {
-    margin-top: auto;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    cursor: pointer;
+:root{
+  --bg:#f4f7fb;
+  --white:#ffffff;
+  --blue:#2563eb;
+  --blue-light:#3b82f6;
+  --blue-soft:#eaf1ff;
+  --text:#1e293b;
+  --text-soft:#64748b;
+  --radius:14px;
 }
 
-/* --- Main --- */
-main { flex: 1; padding: 30px; overflow-y: auto; transition: all 0.3s; }
-h1, h2 { color: #34495e; margin-bottom: 15px; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:var(--bg);display:flex;}
+.app{display:flex;width:100%;}
 
-/* --- Statistiques / cartes --- */
-.stats { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
-.card {
-    flex: 1 1 180px;
-    background: #fff;
-    border-radius: 15px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    font-size: 0.95em;
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  height:100vh;
+  position:fixed;
+  background:var(--white);
+  border-right:1px solid #ddd;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  transition:.3s;
 }
-.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-.card h3 { margin-bottom: 8px; color: #357ABD; }
-.card p { font-size: 1.3em; margin-bottom: 10px; }
-.card i { font-size: 22px; margin-bottom: 8px; display: block; color: #357ABD; }
-.card button {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #0F172A, #2563EB, #38BDF8);
-    color: #f5f6f7;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
+.sidebar.collapsed{width:80px;}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:25px;}
+.brand i{background:var(--blue);color:#fff;padding:12px;border-radius:10px;}
+.brand span{font-weight:700;}
+.sidebar.collapsed .brand span{display:none;}
+.nav a{
+  display:flex;align-items:center;gap:10px;padding:12px;margin-bottom:8px;
+  border-radius:10px;text-decoration:none;color:var(--text-soft);transition:.3s;
 }
-.card button:hover { opacity: 0.9; transform: translateY(-2px); }
+.nav a:hover{background:var(--blue-soft);color:var(--blue);}
+.sidebar.collapsed .nav span{display:none;}
 
-/* --- Quick links en bas du dashboard --- */
-.quick-links {
-    margin-top: 30px;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-.quick-links button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    background: #357ABD;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: bold;
-    position: relative;
-}
-.quick-links button i { font-size: 18px; }
-#notifBadge {
-    background: red;
-    color: white;
-    font-size: 0.8em;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    display: none;
+/* MAIN */
+.main{margin-left:260px;padding:30px;width:100%;transition:.3s;}
+.sidebar.collapsed + .main{margin-left:80px;}
+
+/* TOPBAR */
+.topbar{display:flex;justify-content:space-between;margin-bottom:25px;}
+.topbar h1{font-size:26px;margin-bottom:5px;}
+.topbar p{color:var(--text-soft);}
+.actions{display:flex;gap:10px;}
+.btn{padding:10px 15px;border:none;border-radius:10px;cursor:pointer;font-weight:600;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-ghost{background:#fff;border:1px solid #ddd;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:#fff;padding:25px;border-radius:var(--radius);margin-bottom:20px;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px;}
+.card{background:#fff;padding:20px;border-radius:var(--radius);box-shadow:0 5px 15px rgba(0,0,0,0.05);}
+.card h3{color:var(--text-soft);font-size:14px;}
+.card p{font-size:24px;font-weight:bold;margin:5px 0;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:15px;}
+
+/* PANELS */
+.panel{background:#fff;padding:20px;border-radius:var(--radius);}
+
+/* QUICK ACTIONS */
+.quick h3{margin-bottom:15px;}
+.quick a{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px;border-radius:10px;background:var(--blue-soft);
+  margin-bottom:10px;text-decoration:none;color:var(--text);
 }
 
-/* --- Graphiques --- */
-canvas { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+/* TABLE */
+table{width:100%;border-collapse:collapse;}
+th,td{padding:10px;border-bottom:1px solid #eee;}
 
-/* --- Table notifications --- */
-.notifications table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 0.9em; }
-.notifications th, .notifications td { padding: 10px 12px; text-align: left; }
-.notifications th { background: #5dade2; color: white; }
-.notifications tr:nth-child(even) { background: #f7f9fc; }
-
-/* --- Responsive --- */
-@media (max-width: 900px) {
-    body { flex-direction: column; }
-    aside { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; }
-    aside.collapsed { width: 100%; }
-    aside h2 { display: none; }
-    aside a { flex: 1; text-align: center; margin-bottom: 0; margin-right: 8px; }
-    main { padding: 15px; }
-    .stats { flex-direction: column; }
-    .quick-links { flex-direction: column; }
-}
+/* BADGE */
+.badge{background:red;color:#fff;padding:3px 7px;border-radius:50%;font-size:12px;}
 </style>
 </head>
+
 <body>
+<div class="app">
 
-<!-- Sidebar -->
-<aside id="sidebar">
-   <h2><i class="fas fa-home"></i> RentMaster</h2>
-   <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
-   <a href="bien.html"><i class="fas fa-building"></i> Biens</a>
-   <a href="locataire.html"><i class="fas fa-users"></i> Locataires</a>
-   <a href="contrat.html"><i class="fas fa-file-contract"></i> Contrats</a>
-   <a href="paiement.html"><i class="fas fa-credit-card"></i> Paiements</a>
-   <a href="profil.html"><i class="fas fa-user"></i> Profil</a> 
-   <a href="index.html">❌ Déconnexion</a> 
-   <button id="toggleSidebar">☰</button>
-</aside>
+<!-- SIDEBAR -->
 
-<!-- Main -->
-<main>
-<h1>Dashboard</h1>
+<div class="sidebar" id="sidebar">
+  <div class="brand">
+    <i class="fa-solid fa-building"></i>
+     <button class="btn btn-ghost" onclick="toggleSidebar()">☰</button>
+    <span>RentMaster</span>
+  </div>
 
-<div class="stats">
-  <!-- Biens -->
-  <div class="card" id="cardBiens">
-    <i class="fas fa-building"></i>
-    <h3>Biens</h3>
-    <p id="nbBiens">0</p>
-    <button onclick="window.location.href='bien.html#formAjout'">Ajouter un bien</button>
+  <div class="nav">
+    <a href="dashboard.html"><i class="fa fa-chart-line"></i><span>Dashboard</span></a>
+    <a href="bien.html"><i class="fa fa-building"></i><span>Biens</span></a>
+    <a href="locataire.html"><i class="fa fa-users"></i><span>Locataires</span></a>
+    <a href="contrat.html"><i class="fa fa-file-contract"></i><span>Contrats</span></a>
+    <a href="paiement.html"><i class="fa fa-credit-card"></i><span>Paiements</span></a>
+    <a href="profil.html"><i class="fa fa-user-circle"></i> Profil</a>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+    
   </div>
-  <!-- Locataires -->
-  <div class="card" id="cardLocataires">
-    <i class="fas fa-users"></i>
-    <h3>Locataires</h3>
-    <p id="nbLocataires">0</p>
-    <button onclick="window.location.href='locataire.html#formAjout'">Ajouter un locataire</button>
-  </div>
-  <!-- Contrats -->
-  <div class="card" id="cardContrats">
-    <i class="fas fa-file-contract"></i>
-    <h3>Contrats</h3>
-    <p id="nbContrats">0</p>
-    <button onclick="window.location.href='contrat.html#formAjout'">Ajouter un contrat</button>
-  </div>
-  <!-- Paiements -->
-  <div class="card" id="cardPaiements">
-    <i class="fas fa-credit-card"></i>
-    <h3>Paiements</h3>
-    <p id="nbPaiements">0</p>
-    <button onclick="window.location.href='paiement.html#formAjout'">Ajouter un paiement</button>
-  </div>
+
+ 
 </div>
 
-<h2><i class="fas fa-chart-column"></i> Revenus par mois</h2>
-<canvas id="revenusChart"></canvas>
+<!-- MAIN -->
+<div class="main">
 
-<div class="notifications">
-<h2><i class="fas fa-bell"></i> Dernières actions</h2>
-<table>
-<thead>
-<tr><th>Action</th><th>Date</th></tr>
-</thead>
-<tbody id="tableNotifications"></tbody>
-</table>
-</div>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div>
+    <h1>Vue d'ensemble de votre portefeuille locatif</h1>
+    <p>Gérez vos biens, locataires et paiements facilement</p>
+  </div>
 
-<!-- Quick Links en bas -->
-<div class="quick-links">
-    <button onclick="window.location='message.html'"><i class="fas fa-comment-dots"></i> Messages 💬</button>
-    <button id="btnNotifications" onclick="window.location='notification.html'">
-        <i class="fas fa-bell"></i> Notifications 🔔
-        <span id="notifBadge">0</span>
+  <div class="actions">
+    <!-- CALENDRIER -->
+    <button class="btn btn-ghost" onclick="window.location='calendrier.html'">
+      <i class="fa fa-calendar"></i> Calendrier
     </button>
+    <!-- AJOUTER BIEN -->
+    <button class="btn btn-primary" onclick="window.location='bien.html#formAjout'">
+      <i class="fa fa-plus"></i> Ajouter un bien
+    </button>
+  </div>
 </div>
 
-</main>
+<!-- HERO -->
+<div class="hero">
+  <h2>Suivi centralisé de votre activité</h2>
+  <p>Visualisez vos performances en temps réel</p>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="card"><h3>Biens</h3><p id="nbBiens">0</p></div>
+  <div class="card"><h3>Locataires</h3><p id="nbLocataires">0</p></div>
+  <div class="card"><h3>Contrats</h3><p id="nbContrats">0</p></div>
+  <div class="card"><h3>Paiements</h3><p id="nbPaiements">0</p></div>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+  <!-- GRAPH -->
+  <div class="panel">
+    <h3>Revenus mensuels</h3>
+    <canvas id="chart"></canvas>
+  </div>
+
+  <!-- ACTIONS RAPIDES -->
+  <div class="panel quick">
+    <h3>⚡ Actions rapides</h3>
+    <a href="message.html"><span><i class="fa fa-comment"></i> Messages</span></a>
+    <a href="notification.html"><span><i class="fa fa-bell"></i> Notifications</span> <span id="badge" class="badge">0</span></a>
+    <a href="contrat.html#formAjout"><span><i class="fa fa-file-contract"></i> Nouveau contrat</span></a>
+  </div>
+
+</div>
+
+<!-- DERNIÈRES ACTIONS -->
+<div class="panel" style="margin-top:20px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h3>Dernières actions</h3>
+    <button class="btn btn-ghost" onclick="window.location='historique_bailleur.html'">
+      <i class="fa fa-clock"></i> Historique
+    </button>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Action</th><th>Date</th></tr>
+    </thead>
+    <tbody id="tableNotifications"></tbody>
+  </table>
+</div>
+
+</div>
+</div>
 
 <script>
-// --- Toggle sidebar ---
-document.getElementById('toggleSidebar').addEventListener('click', () => {
+/* SIDEBAR */
+function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('collapsed');
-});
+}
 
-// --- Statistiques ---
-function afficherStats() {
+/* DATA */
+function loadData(){
   const biens = JSON.parse(localStorage.getItem("biens")) || [];
   const locataires = JSON.parse(localStorage.getItem("locataires")) || [];
   const contrats = JSON.parse(localStorage.getItem("contrats")) || [];
   const paiements = JSON.parse(localStorage.getItem("paiements")) || [];
 
-  document.getElementById('nbBiens').innerText = biens.length;
-  document.getElementById('nbLocataires').innerText = locataires.length;
-  document.getElementById('nbContrats').innerText = contrats.length;
-  document.getElementById('nbPaiements').innerText = paiements.length;
-}
+  nbBiens.innerText = biens.length;
+  nbLocataires.innerText = locataires.length;
+  nbContrats.innerText = contrats.length;
+  nbPaiements.innerText = paiements.length;
 
-// --- Notifications table ---
-function afficherNotifications() {
-  const locataires = JSON.parse(localStorage.getItem("locataires")) || [];
-  const paiements = JSON.parse(localStorage.getItem("paiements")) || [];
-  const tbody = document.getElementById('tableNotifications');
-  tbody.innerHTML = "";
+  // notifications
+  const tbody = document.getElementById("tableNotifications");
+  tbody.innerHTML="";
 
-  locataires.slice(-3).forEach(l => {
-    const row = tbody.insertRow();
-    row.insertCell(0).innerText = "Nouveau locataire : " + l.nom;
+  locataires.slice(-2).forEach(l=>{
+    let row = tbody.insertRow();
+    row.insertCell(0).innerText = "Nouveau locataire : "+l.nom;
     row.insertCell(1).innerText = new Date().toLocaleDateString();
   });
 
-  paiements.slice(-3).forEach(p => {
-    const row = tbody.insertRow();
-    row.insertCell(0).innerText = "Paiement : " + p.contrat + " - " + p.montant + "$";
+  paiements.slice(-2).forEach(p=>{
+    let row = tbody.insertRow();
+    row.insertCell(0).innerText = "Paiement : "+p.montant+"$";
     row.insertCell(1).innerText = p.date;
   });
+
+  document.getElementById("badge").innerText = tbody.rows.length;
 }
 
-// --- Badge notifications en temps réel ---
-function updateNotifBadge() {
-    const locataires = JSON.parse(localStorage.getItem("locataires")) || [];
-    const paiements = JSON.parse(localStorage.getItem("paiements")) || [];
-    const totalNotif = paiements.slice(-3).length + locataires.slice(-3).length;
-
-    const badge = document.getElementById("notifBadge");
-    if(totalNotif > 0){
-        badge.innerText = totalNotif;
-        badge.style.display = "inline-block";
-    } else {
-        badge.style.display = "none";
-    }
-}
-setInterval(updateNotifBadge, 2000);
-window.onload = function() {
-  afficherStats();
-  afficherNotifications();
-  updateNotifBadge();
-
-  // Graphiques revenus
+/* CHART */
+function loadChart(){
   const paiements = JSON.parse(localStorage.getItem("paiements")) || [];
-  const labels = ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"];
-  const revenus = Array(12).fill(0);
-  paiements.forEach(p => {
-    const date = new Date(p.date);
-    revenus[date.getMonth()] += parseFloat(p.montant);
+  let revenus = Array(12).fill(0);
+  paiements.forEach(p=>{
+    let d = new Date(p.date);
+    revenus[d.getMonth()] += parseFloat(p.montant);
   });
 
-  new Chart(document.getElementById('revenusChart'), {
-    type: 'bar',
-    data: { labels, datasets: [{ label: 'Revenus $', data: revenus, backgroundColor: 'rgba(54,162,235,0.5)' }] },
-    options: { responsive: true, plugins: { legend: { display: false } } }
+  new Chart(document.getElementById("chart"),{
+    type:"line",
+    data:{
+      labels:["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"],
+      datasets:[{
+        data:revenus,
+        borderColor:"#2563eb",
+        backgroundColor:"rgba(37,99,235,0.1)",
+        fill:true,
+        tension:0.4
+      }]
+    }
   });
-};
+}
+
+window.onload = ()=>{
+  loadData();
+  loadChart();
+}
 </script>
 </body>
 </html>

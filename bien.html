@@ -2,88 +2,109 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestion des Biens - RentMaster</title>
- <link rel="stylesheet" href="bien.css">
- <style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    /* Image de fond */
-    background-image: url('fond3.png'); /* remplace par ton image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: #1b263b; /* texte bleu foncé */
-}
-
- </style>
+<link rel="stylesheet" href="bien.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  
-<h1>Gestion des Biens</h1>
 
-<nav>
-  <a href="dashboard.html">Dashboard</a>
-  <a href="bien.html">Biens</a>
-  <a href="locataire.html">Locataires</a>
-  <a href="contrat.html">Contrats</a>
-  <a href="paiement.html">Paiements</a>
-</nav>
+<div class="container">
 
-<label>Rechercher :</label>
-<input type="text" id="searchInput" placeholder="Nom, Adresse, Statut" onkeyup="filtrerBiens()">
-<button onclick="document.getElementById('formAjout').style.display='block'">+ Ajouter un bien</button>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="logo.png" alt="Logo RentMaster">
+      <h2>RentMaster</h2>
+    </div>
+    <nav>
+      <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+      <a href="bien.html" class="active"><i class="fa fa-building"></i> Biens</a>
+      <a href="locataire.html"><i class="fa fa-users"></i> Locataires</a>
+      <a href="contrat.html"><i class="fa fa-file-contract"></i> Contrats</a>
+      <a href="paiement.html"><i class="fa fa-credit-card"></i> Paiements</a>
+    </nav>
+  </aside>
 
-<table id="tableBiens">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nom</th>
-      <th>Adresse</th>
-      <th>Type</th>
-      <th>Surface (m²)</th>
-      <th>Pièces</th>
-      <th>Loyer ($)</th>
-      <th>Statut</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <!-- CONTENU PRINCIPAL -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Gestion des Biens</h1>
+      <p>Ajoutez, modifiez ou supprimez vos biens facilement. Chaque bien peut avoir une image d'identité.</p>
+    </div>
 
-<div id="formAjout">
-  <h2 id="formTitle">Ajouter un bien</h2>
-  <label>Nom :</label>
-  <input type="text" id="nomBien"><br>
-  <label>Adresse :</label>
-  <input type="text" id="adresseBien"><br>
-  <label>Type :</label>
-  <select id="typeBien">
-    <option value="Appartement">Appartement</option>
-    <option value="Maison">Maison</option>
-    <option value="Studio">Studio</option>
-    <option value="Bureau">Bureau</option>
-  </select><br>
-  <label>Surface (m²) :</label>
-  <input type="number" id="surfaceBien"><br>
-  <label>Nombre de pièces :</label>
-  <input type="number" id="piecesBien"><br>
-  <label>Loyer :</label>
-  <input type="number" id="loyerBien"><br>
-  <label>Statut :</label>
-  <select id="statutBien">
-    <option value="Disponible">Disponible</option>
-    <option value="Loué">Loué</option>
-    <option value="Maintenance">Maintenance</option>
-  </select><br>
-  <label>Description / équipements :</label><br>
-  <textarea id="descBien" rows="3" cols="50" placeholder="Ex: Balcon, piscine, parking"></textarea><br>
-  <label>Image :</label>
-  <input type="file" id="imageBien" accept="image/*"><br>
-  <button id="btnAjouter" onclick="ajouterBien()">Ajouter</button>
-  <button onclick="annulerForm()">Annuler</button>
+    <div class="actions-top">
+      <input type="text" id="searchInput" placeholder="Rechercher : Nom, Adresse, Statut" onkeyup="filtrerBiens()">
+      <button onclick="document.getElementById('formAjout').style.display='block'"><i class="fa fa-plus"></i> Ajouter un bien</button>
+    </div>
+
+    <table id="tableBiens">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Image</th>
+          <th>Nom</th>
+          <th>Adresse</th>
+          <th>Type</th>
+          <th>Surface (m²)</th>
+          <th>Pièces</th>
+          <th>Loyer ($)</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- FORMULAIRE MODAL -->
+    <div id="formAjout" class="form-modal">
+      <h2 id="formTitle">Ajouter un bien</h2>
+
+      <label>Image d'identité du bien :</label>
+      <input type="file" id="imageBien" accept="image/*">
+
+      <label>Nom :</label>
+      <input type="text" id="nomBien" placeholder="Ex: Appartement centre-ville">
+
+      <label>Adresse :</label>
+      <input type="text" id="adresseBien" placeholder="Ex: 12 rue du Marché">
+
+      <label>Type :</label>
+      <select id="typeBien">
+        <option value="Appartement">Appartement</option>
+        <option value="Maison">Maison</option>
+        <option value="Studio">Studio</option>
+        <option value="Bureau">Bureau</option>
+      </select>
+
+      <label>Surface (m²) :</label>
+      <input type="number" id="surfaceBien" placeholder="Ex: 80">
+
+      <label>Nombre de pièces :</label>
+      <input type="number" id="piecesBien" placeholder="Ex: 3">
+
+      <label>Loyer ($) :</label>
+      <input type="number" id="loyerBien" placeholder="Ex: 450">
+
+      <label>Statut :</label>
+      <select id="statutBien">
+        <option value="Disponible">Disponible</option>
+        <option value="Loué">Loué</option>
+        <option value="Maintenance">Maintenance</option>
+      </select>
+
+      <label>Description / équipements :</label>
+      <textarea id="descBien" rows="3" placeholder="Ex: Balcon, piscine, parking"></textarea>
+
+      <div class="btn-group">
+        <button id="btnAjouter" onclick="ajouterBien()"><i class="fa fa-save"></i> Ajouter</button>
+        <button onclick="annulerForm()"><i class="fa fa-times"></i> Annuler</button>
+      </div>
+    </div>
+
+  </main>
 </div>
+
 <footer>
   <p>&copy; 2026 RentMaster. Tous droits réservés.</p>
   <p>
@@ -91,6 +112,7 @@
     Portfolio : <a href="https://divinekatende.github.io/DIVKT/" target="_blank">Mon Portfolio</a>
   </p>
 </footer>
+
 <script>
 let biens = JSON.parse(localStorage.getItem("biens")) || [];
 let editIndex = -1;
@@ -101,18 +123,19 @@ function afficherBiens() {
   biens.forEach((bien, index) => {
     const row = table.insertRow();
     row.insertCell(0).innerText = bien.id;
-    row.insertCell(1).innerHTML = bien.photos ? `<img src="${bien.photos[0]}"> ${bien.nom}` : bien.nom;
-    row.insertCell(2).innerText = bien.adresse;
-    row.insertCell(3).innerText = bien.type;
-    row.insertCell(4).innerText = bien.surface;
-    row.insertCell(5).innerText = bien.pieces;
-    row.insertCell(6).innerText = bien.loyer;
-    const statutCell = row.insertCell(7);
+    row.insertCell(1).innerHTML = bien.photos ? `<img src="${bien.photos[0]}" class="identite">` : '';
+    row.insertCell(2).innerText = bien.nom;
+    row.insertCell(3).innerText = bien.adresse;
+    row.insertCell(4).innerText = bien.type;
+    row.insertCell(5).innerText = bien.surface;
+    row.insertCell(6).innerText = bien.pieces;
+    row.insertCell(7).innerText = bien.loyer;
+    const statutCell = row.insertCell(8);
     statutCell.innerText = bien.statut;
     statutCell.className = bien.statut === "Disponible" ? "vacant" : bien.statut === "Loué" ? "loue" : "maintenance";
-    const actionsCell = row.insertCell(8);
-    actionsCell.innerHTML = `<button onclick="modifierBien(${index})">Modifier</button>
-                             <button onclick="supprimerBien(${index})">Supprimer</button>`;
+    const actionsCell = row.insertCell(9);
+    actionsCell.innerHTML = `<button onclick="modifierBien(${index})"><i class="fa fa-edit"></i></button>
+                             <button onclick="supprimerBien(${index})"><i class="fa fa-trash"></i></button>`;
   });
 }
 
@@ -199,23 +222,25 @@ function filtrerBiens() {
     if(bien.nom.toLowerCase().includes(filtre) || bien.adresse.toLowerCase().includes(filtre) || bien.statut.toLowerCase().includes(filtre)) {
       const row = table.insertRow();
       row.insertCell(0).innerText = bien.id;
-      row.insertCell(1).innerHTML = bien.photos ? `<img src="${bien.photos[0]}"> ${bien.nom}` : bien.nom;
-      row.insertCell(2).innerText = bien.adresse;
-      row.insertCell(3).innerText = bien.type;
-      row.insertCell(4).innerText = bien.surface;
-      row.insertCell(5).innerText = bien.pieces;
-      row.insertCell(6).innerText = bien.loyer;
-      const statutCell = row.insertCell(7);
+      row.insertCell(1).innerHTML = bien.photos ? `<img src="${bien.photos[0]}" class="identite">` : '';
+      row.insertCell(2).innerText = bien.nom;
+      row.insertCell(3).innerText = bien.adresse;
+      row.insertCell(4).innerText = bien.type;
+      row.insertCell(5).innerText = bien.surface;
+      row.insertCell(6).innerText = bien.pieces;
+      row.insertCell(7).innerText = bien.loyer;
+      const statutCell = row.insertCell(8);
       statutCell.innerText = bien.statut;
       statutCell.className = bien.statut === "Disponible" ? "vacant" : bien.statut === "Loué" ? "loue" : "maintenance";
-      const actionsCell = row.insertCell(8);
-      actionsCell.innerHTML = `<button onclick="modifierBien(${index})">Modifier</button>
-                               <button onclick="supprimerBien(${index})">Supprimer</button>`;
+      const actionsCell = row.insertCell(9);
+      actionsCell.innerHTML = `<button onclick="modifierBien(${index})"><i class="fa fa-edit"></i></button>
+                               <button onclick="supprimerBien(${index})"><i class="fa fa-trash"></i></button>`;
     }
   });
 }
 
 afficherBiens();
 </script>
+
 </body>
 </html>

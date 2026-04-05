@@ -1,213 +1,150 @@
-/* --- Reset et base --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    /* Image de fond */
-    background-image: url('fond3.png'); /* remplace par ton image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: #1b263b; /* texte bleu foncé */
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f4f6f9;
+  color: #1b263b;
 }
 
-/* --- Navigation --- */
-nav a {
-    margin-right: 15px;
-    text-decoration: none;
-    color: #1b263b; /* bleu foncé */
-    font-weight: 500;
-    transition: color 0.3s, transform 0.3s;
-}
-nav a:hover {
-    color: #5dade2; /* bleu ciel doux */
-    transform: translateY(-2px);
+.container {
+  display: flex;
 }
 
-/* --- Inputs & selects --- */
-input, select, textarea {
-    padding: 8px 10px;
-    margin: 5px 0 10px 0;
-    width: 220px;
-    border: 1px solid #b0c4de; /* bleu clair doux */
-    border-radius: 6px;
-    outline: none;
-    transition: all 0.3s;
-    background: rgba(255,255,255,0.85); /* semi-transparent pour mieux voir l'image de fond */
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: #2a2dd9;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
 }
-input:focus, select:focus, textarea:focus {
-    border-color: #090067; /* bleu intermédiaire */
-    box-shadow: 0 0 8px rgba(52,152,219,0.3);
+.sidebar .logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.sidebar .logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid white;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.sidebar h2 { font-size: 1.3em; margin: 0; }
+.sidebar nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.sidebar nav a.active, .sidebar nav a:hover {
+  background: #1f23b5;
+  transform: scale(1.03);
 }
 
-/* --- Boutons --- */
-button {
-    padding: 8px 14px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #3498db, #3f31fc, #afc5f1, #d3e6f6); /* bleu → bleu ciel → blanc → beige */
-    color: #1b263b;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(52,152,219,0.2);
-}
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(52,152,219,0.35);
-    opacity: 0.95;
+/* MAIN CONTENT */
+.main-content {
+  margin-left: 240px;
+  padding: 30px;
+  flex: 1;
 }
 
-/* --- Tableaux --- */
+/* PAGE HEADER */
+.page-header h1 { margin-bottom: 5px; }
+.page-header p { color: #444; margin-bottom: 20px; }
+
+/* ACTIONS */
+.actions-top { display: flex; gap: 10px; margin-bottom: 15px; }
+.actions-top input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+.actions-top button { padding: 10px 14px; border-radius: 8px; background: #3498db; color: white; border: none; cursor: pointer; transition: 0.3s; }
+.actions-top button:hover { background: #1f6fb2; transform: translateY(-2px); }
+
+/* TABLE */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    background: linear-gradient(to right, #e6f0fa, #ffffff, #fbeef4); /* bleu clair → blanc → rose clair */
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  background: white;
 }
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #dfe6ef;
+th, td { padding: 14px; text-align: left; border-bottom: 1px solid #ddd; }
+th { background: #2a2dd9; color: white; font-weight: 600; }
+tr:hover { background: #f1f8ff; }
+.identite { max-width: 50px; border-radius: 50%; border: 1px solid #ccc; }
+
+/* STATUTS */
+.vacant { color: #27ae60; font-weight: bold; }
+.loue { color: #e74c3c; font-weight: bold; }
+.maintenance { color: #f39c12; font-weight: bold; }
+
+/* FORMULAIRE MODAL */
+.form-modal {
+  display: none;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 500px;
+  margin: 30px auto;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  transition: 0.3s;
 }
-th {
-    background: #3498db; /* bleu intermédiaire */
-    color: white;
-    text-transform: uppercase;
-    font-size: 0.95em;
+.form-modal h2 { text-align: center; margin-bottom: 20px; color: #1b263b; }
+.form-modal label { display: block; margin-top: 12px; font-weight: 600; color: #333; }
+.form-modal input, .form-modal select, .form-modal textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.3s;
 }
-tr:hover {
-    background: #f1f8ff; /* léger bleu clair */
+.form-modal input:focus, .form-modal select:focus, .form-modal textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 10px rgba(52,152,219,0.3);
+  transform: scale(1.02);
 }
 
-/* --- Statuts --- */
-.vacant { color: #27ae60; font-weight: bold; }       /* vert pour disponible */
-.loue { color: #e74c3c; font-weight: bold; }         /* rouge pour loué */
-.maintenance { color: #f39c12; font-weight: bold; }  /* orange pour maintenance */
-
-/* --- Formulaire d'ajout/modification --- */
-/* --- FORMULAIRE MODERNE --- */
-#formAjout {
-    display: none;
-    margin: 30px auto;
-    padding: 25px;
-    border-radius: 15px;
-    
-    /* effet glassmorphism 🔥 */
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    
-    border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    
-    max-width: 500px;
-    animation: fadeIn 0.4s ease;
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
-
-#formAjout h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #0a1f44;
-    font-size: 1.4em;
+.btn-group button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
 }
+.btn-group button:first-child { background: #3498db; color: white; margin-right: 10px; }
+.btn-group button:last-child { background: #e74c3c; color: white; }
 
-/* --- STRUCTURE FORMULAIRE --- */
-#formAjout label {
-    display: block;
-    margin-top: 10px;
-    font-weight: 600;
-    color: #1b263b;
-}
-
-/* Champs alignés proprement */
-#formAjout input,
-#formAjout select,
-#formAjout textarea {
-    width: 100%;
-    padding: 10px 12px;
-    margin-top: 5px;
-    border-radius: 8px;
-    border: 1px solid #b0c4de;
-    
-    background: rgba(255,255,255,0.9);
-    transition: all 0.3s;
-}
-
-/* Focus amélioré */
-#formAjout input:focus,
-#formAjout select:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 10px rgba(37,99,235,0.3);
-    transform: scale(1.02);
-}
-
-/* --- BOUTONS DU FORMULAIRE --- */
-#formAjout button {
-    width: 48%;
-    margin-top: 15px;
-}
-
-/* alignement boutons */
-#formAjout .btn-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-/* bouton annuler */
-#formAjout button:last-child {
-    background: linear-gradient(135deg, #e74c3c, #ff7675);
-    color: white;
-}
-
-/* --- ANIMATION --- */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* --- Images --- */
-img {
-    max-width: 50px;
-    border-radius: 5px;
-    vertical-align: middle;
-    margin-right: 8px;
-    border: 1px solid #ccd6f6;
-}
-/* --- Footer --- */
+/* FOOTER */
 footer {
-    background: rgba(255,255,255,0.9); /* semi-transparent pour fond */
-    color: #1b263b; /* texte bleu foncé */
-    text-align: center;
-    padding: 15px 20px;
-    border-top: 2px solid #3498db; /* trait bleu intermédiaire */
-    border-radius: 8px 8px 0 0;
-    margin-top: 30px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-    font-size: 0.9em;
+  text-align: center;
+  padding: 15px 20px;
+  background: #f1f4fc;
+  margin-top: 30px;
+  font-size: 0.9em;
 }
+footer a { color: #2a2dd9; text-decoration: none; }
+footer a:hover { color: #5dade2; }
 
-footer a {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-footer a:hover {
-    color: #5dade2;
-}
-
-/* --- Responsive --- */
-@media (max-width: 900px) {
-    input, select, textarea { width: 100%; }
-    nav a { display: block; margin-bottom: 5px; }
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  .container { flex-direction: column; }
+  .sidebar { position: relative; width: 100%; height: auto; display: flex; flex-direction: row; overflow-x: auto; }
+  .sidebar nav { display: flex; flex-direction: row; gap: 10px; }
+  .main-content { margin-left: 0; padding: 20px; }
+  .actions-top { flex-direction: column; gap: 10px; }
+  .btn-group { flex-direction: column; gap: 10px; }
 }
