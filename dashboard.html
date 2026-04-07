@@ -22,8 +22,19 @@
   --radius:14px;
 }
 
+/* DARK THEME VARIABLES */
+body.dark{
+  --bg:#1e293b;
+  --white:#1f2937;
+  --blue:#3b82f6;
+  --blue-light:#60a5fa;
+  --blue-soft:#334155;
+  --text:#f4f7fb;
+  --text-soft:#cbd5e1;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body{background:var(--bg);display:flex;}
+body{background:var(--bg);color:var(--text);display:flex;}
 .app{display:flex;width:100%;}
 
 /* SIDEBAR */
@@ -37,6 +48,10 @@ body{background:var(--bg);display:flex;}
   display:flex;
   flex-direction:column;
   transition:.3s;
+}
+.sidebar.dark{
+  background:var(--white);
+  border-color:#334155;
 }
 .sidebar.collapsed{width:80px;}
 .brand{display:flex;align-items:center;gap:10px;margin-bottom:25px;}
@@ -58,7 +73,7 @@ body{background:var(--bg);display:flex;}
 .topbar{display:flex;justify-content:space-between;margin-bottom:25px;}
 .topbar h1{font-size:26px;margin-bottom:5px;}
 .topbar p{color:var(--text-soft);}
-.actions{display:flex;gap:10px;}
+.actions{display:flex;gap:10px;align-items:center;}
 .btn{padding:10px 15px;border:none;border-radius:10px;cursor:pointer;font-weight:600;}
 .btn-primary{background:var(--blue);color:#fff;}
 .btn-ghost{background:#fff;border:1px solid #ddd;}
@@ -66,44 +81,9 @@ body{background:var(--bg);display:flex;}
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:#fff;padding:25px;border-radius:var(--radius);margin-bottom:20px;}
 
-/* BOUTON CALCULATRICE PREMIUM */
-.fab-calculator{
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--blue), var(--blue-light));
-    color: white;
-    border: none;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    cursor: pointer;
-    z-index: 9999;
-    transition: all 0.3s ease;
-}
-
-/* HOVER */
-.fab-calculator:hover{
-    transform: scale(1.1) rotate(5deg);
-}
-
-/* VERSION MOBILE */
-@media(max-width:768px){
-    .fab-calculator{
-        bottom: 15px;
-        right: 15px;
-        width: 55px;
-        height: 55px;
-    }
-}
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px;}
-.card{background:#fff;padding:20px;border-radius:var(--radius);box-shadow:0 5px 15px rgba(0,0,0,0.05);}
+.card{background:var(--white);padding:20px;border-radius:var(--radius);box-shadow:0 5px 15px rgba(0,0,0,0.05);color:var(--text);}
 .card h3{color:var(--text-soft);font-size:14px;}
 .card p{font-size:24px;font-weight:bold;margin:5px 0;}
 
@@ -111,7 +91,7 @@ body{background:var(--bg);display:flex;}
 .grid{display:grid;grid-template-columns:2fr 1fr;gap:15px;}
 
 /* PANELS */
-.panel{background:#fff;padding:20px;border-radius:var(--radius);}
+.panel{background:var(--white);padding:20px;border-radius:var(--radius);color:var(--text);}
 
 /* QUICK ACTIONS */
 .quick h3{margin-bottom:15px;}
@@ -134,13 +114,11 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
 <div class="app">
 
 <!-- SIDEBAR -->
-
 <div class="sidebar" id="sidebar">
   <div class="brand">
     <i class="fa-solid fa-building"></i>
     <span>RentMaster</span>
      <button class="btn btn-ghost" onclick="toggleSidebar()">☰</button>
-    
   </div>
 
   <div class="nav">
@@ -151,11 +129,7 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
     <a href="paiement.html"><i class="fa fa-credit-card"></i><span>Paiements</span></a>
     <a href="profil.html"><i class="fa fa-user-circle"></i> Profil</a>
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
-    
-    
   </div>
-
- 
 </div>
 
 <!-- MAIN -->
@@ -173,6 +147,12 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
     <button class="btn btn-ghost" onclick="window.location='calendrier.html'">
       <i class="fa fa-calendar"></i> Calendrier
     </button>
+
+    <!-- BOUTON THEME -->
+    <button id="themeToggle" class="btn btn-ghost">
+      <i class="fas fa-moon"></i>
+    </button>
+
     <!-- AJOUTER BIEN -->
     <button class="btn btn-primary" onclick="window.location='bien.html#formAjout'">
       <i class="fa fa-plus"></i> Ajouter un bien
@@ -194,14 +174,22 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
   <div class="card"><h3>Paiements</h3><p id="nbPaiements">0</p></div>
 </div>
 
-<!-- BOUTON CALCULATRICE FLOTTANT -->
-<button class="fab-calculator" onclick="window.location='calculatrice.html'">
-    <i class="fas fa-calculator"></i>
-</button>
-
+ <!-- Calculatrice -->
+  
+  <div style="grid-column: 1 / 2;">
+  <a href="calculatrice.html" style="text-decoration:none;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;background:var(--blue-soft);padding:15px;border-radius:var(--radius);color:var(--text);cursor:pointer;transition:0.3s;">
+      <i class="fas fa-calculator" style="font-size:24px;"></i>
+      <div>
+        <strong>Prévisions financières :</strong> Utilisez la calculatrice pour estimer vos revenus et charges.
+      </div>
+    </div>
+  </a>
+</div>
 <!-- GRID -->
 <div class="grid">
 
+  
   <!-- GRAPH -->
   <div class="panel">
     <h3>Revenus mensuels</h3>
@@ -298,6 +286,17 @@ function loadChart(){
     }
   });
 }
+
+/* THEME TOGGLE */
+const themeToggle = document.getElementById("themeToggle");
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    if(document.body.classList.contains("dark")){
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+});
 
 window.onload = ()=>{
   loadData();
