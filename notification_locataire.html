@@ -3,202 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <title>Notifications - RentMaster</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-
-/* --- BODY --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background-image: url('fond3.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #1b263b;
+    font-family: 'Segoe UI', sans-serif;
+    margin:0;
+    background:#f4f6f9;
+    color:#1b263b;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
 }
 
-/* --- HEADER --- */
+/* HEADER */
 .header {
-    background: rgba(44, 62, 80, 0.9);
-    color: white;
-    padding: 18px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    backdrop-filter: blur(6px);
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    padding:15px;
+    font-weight:bold;
 }
 
-/* --- NAV --- */
+/* NAV */
 nav {
-    display: flex;
-    justify-content: center;
-    background: rgba(255,255,255,0.9);
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    background:white;
+    padding:12px;
+    border-bottom:1px solid #ccc;
 }
 nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #3498db;
-    font-weight: bold;
+    color:#2563eb;
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
 }
-nav a:hover {
-    color: #2980b9;
-}
+nav a:hover { color:#1e40af; }
 
-/* --- CONTAINER --- */
+/* CONTAINER */
 .container {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 10px;
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
 }
 
-/* --- NOTIFICATION CARD --- */
+/* NOTIFICATION */
 .notification {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: 0.3s;
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-.notification:hover {
-    transform: translateY(-3px);
+.notification p { margin:0; }
+.notification button {
+    border:none;
+    background:#e74c3c;
+    color:white;
+    padding:5px 10px;
+    border-radius:5px;
+    cursor:pointer;
 }
-
-/* --- ICON --- */
-.icon {
-    font-size: 22px;
-}
-
-/* --- TYPES COULEURS --- */
-.retard {
-    border-left: 6px solid #e74c3c;
-}
-.valide {
-    border-left: 6px solid #2ecc71;
-}
-.message {
-    border-left: 6px solid #f39c12;
-}
-
-/* --- TEXT --- */
-.text {
-    flex: 1;
-    font-size: 14px;
-}
-
-.text strong {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 15px;
-}
-
-/* --- DATE --- */
-.date {
-    font-size: 11px;
-    color: #777;
-    margin-top: 5px;
-}
-
-/* --- EMPTY --- */
-.vide {
-    text-align: center;
-    color: #888;
-    margin-top: 80px;
-    font-size: 16px;
-}
-
-/* --- SCROLL --- */
-.container::-webkit-scrollbar {
-    width: 6px;
-}
-.container::-webkit-scrollbar-thumb {
-    background: #3498db;
-    border-radius: 3px;
-}
-
-/* --- RESPONSIVE --- */
-@media(max-width: 700px){
-    .container {
-        margin: 10px;
-    }
-}
-
+.notification button:hover { opacity:0.9; }
 </style>
 </head>
-
 <body>
 
-<div class="header">
-🔔 Notifications RentMaster
-</div>
+<div class="header">🔔 Notifications</div>
 
 <nav>
-  <a href="dashboard_locataire.html">Dashboard</a>
-  <a href="contrat_locataire.html">Contrats</a>
-  <a href="message_locataire.html">Messages 💬</a>
-  <a href="guide.html">Guide</a>
+  <a href="dashboard_locataire.html"><i class="fas fa-chart-line"></i>Dashboard</a>
+  <a href="contrat_locataire.html"><i class="fas fa-file-contract"></i>Contrats</a>
+  <a href="message_locataire.html"><i class="fas fa-comment"></i>Messages</a>
 </nav>
 
 <div class="container" id="notifContainer"></div>
 
 <script>
+let notifications = JSON.parse(localStorage.getItem("notifications")) || [
+  {id:1, text:"Paiement du 05/04 reçu."},
+  {id:2, text:"Nouveau message de Ketsia Divine."}
+];
 
-// --- SÉCURITÉ ---
-if (localStorage.getItem("connecte") !== "true") {
-    window.location.href = "login.html";
-}
-
-// --- DATA ---
-let notifications = JSON.parse(localStorage.getItem("notifications")) || [];
-
-// --- AFFICHAGE ---
-function afficherNotifications() {
+function afficherNotif(){
   const container = document.getElementById("notifContainer");
-  container.innerHTML = "";
-
-  if(notifications.length === 0){
-    container.innerHTML = `<p class="vide">Aucune notification</p>`;
+  container.innerHTML="";
+  if(notifications.length===0){
+    container.innerHTML='<p style="text-align:center; color:#888;">Aucune notification</p>';
     return;
   }
-
-  // plus récent en haut
-  const reversed = [...notifications].reverse();
-
-  reversed.forEach(n => {
-
-    let icon = "🔔";
-
-    if(n.type === "retard") icon = "⚠️";
-    if(n.type === "valide") icon = "✅";
-    if(n.type === "message") icon = "💬";
-
+  notifications.forEach((n,index)=>{
     const div = document.createElement("div");
-    div.classList.add("notification", n.type);
-
-    div.innerHTML = `
-      <div class="icon">${icon}</div>
-
-      <div class="text">
-        <strong>${n.titre}</strong>
-        ${n.message}
-        <div class="date">${n.date}</div>
-      </div>
-    `;
-
+    div.classList.add("notification");
+    div.innerHTML = `<p>${n.text}</p>
+                     <button onclick="supprimerNotif(${index})"><i class="fas fa-trash"></i></button>`;
     container.appendChild(div);
   });
 }
 
-// --- INIT ---
-afficherNotifications();
+function supprimerNotif(index){
+  notifications.splice(index,1);
+  localStorage.setItem("notifications",JSON.stringify(notifications));
+  afficherNotif();
+}
 
+afficherNotif();
 </script>
 
 </body>

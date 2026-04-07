@@ -3,68 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <title>Messages - RentMaster</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-
-/* --- BODY --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     margin: 0;
-    background-image: url('fond3.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #1b263b;
+    background: #f4f6f9;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
+    color: #1b263b;
 }
 
-/* --- HEADER --- */
+/* HEADER */
 .header {
-    background: rgba(44, 62, 80, 0.9);
+    background: #2563eb;
     color: white;
     padding: 15px;
     text-align: center;
     font-weight: bold;
-    backdrop-filter: blur(5px);
+    font-size: 18px;
 }
 
-/* --- NAV --- */
+/* NAVIGATION AVEC ICÔNES */
 nav {
     display: flex;
     justify-content: center;
-    background: rgba(255,255,255,0.9);
-    padding: 10px;
+    gap: 25px;
+    background: #ffffff;
+    padding: 12px;
     border-bottom: 1px solid #ccc;
 }
+
 nav a {
-    margin: 0 15px;
+    color: #2563eb;
     text-decoration: none;
-    color: #3498db;
-    font-weight: bold;
-}
-nav a:hover {
-    color: #2980b9;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
 }
 
-/* --- CHAT CONTAINER --- */
+nav a:hover {
+    color: #1e40af;
+}
+
+/* CHAT CONTAINER */
 #chatContainer {
     flex: 1;
     overflow-y: auto;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    max-width: 800px;
+    margin: auto;
+    width: 100%;
 }
 
-/* --- MESSAGE --- */
+/* MESSAGE */
 .message {
     max-width: 70%;
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 15px;
     margin: 8px 0;
     font-size: 14px;
-    backdrop-filter: blur(3px);
+    position: relative;
+    word-wrap: break-word;
 }
 
 /* PROPRIÉTAIRE */
@@ -76,18 +81,17 @@ nav a:hover {
 
 /* LOCATAIRE */
 .locataire {
-    background: rgba(255,255,255,0.9);
+    background: #ffffff;
+    border: 1px solid #3498db;
     margin-right: auto;
 }
 
-/* INFO */
+/* INFO ET DATE */
 .info-msg {
     font-size: 11px;
     opacity: 0.8;
     margin-bottom: 3px;
 }
-
-/* DATE */
 .date-msg {
     font-size: 10px;
     margin-top: 5px;
@@ -95,12 +99,27 @@ nav a:hover {
     opacity: 0.7;
 }
 
-/* --- FORM --- */
+/* SUPPRIMER MESSAGE */
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.7;
+}
+.delete-btn:hover { opacity: 1; color: #ff4d4d; }
+
+/* FORMULAIRE ENVOI */
 #formMessage {
     display: flex;
-    padding: 10px;
-    background: rgba(255,255,255,0.95);
+    padding: 12px;
+    background: #ffffff;
     border-top: 1px solid #ccc;
+    max-width: 800px;
+    margin: auto;
+    width: 100%;
+    gap: 5px;
 }
 
 #formMessage select,
@@ -108,7 +127,6 @@ nav a:hover {
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    margin-right: 5px;
 }
 
 #formMessage textarea {
@@ -120,13 +138,11 @@ nav a:hover {
     padding: 8px 15px;
     border-radius: 8px;
     border: none;
-    background: linear-gradient(135deg, #0F172A, #2563EB, #38BDF8);
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
     color: white;
     cursor: pointer;
 }
-#formMessage button:hover {
-    opacity: 0.9;
-}
+#formMessage button:hover { opacity: 0.9; }
 
 /* SCROLL */
 #chatContainer::-webkit-scrollbar {
@@ -136,21 +152,17 @@ nav a:hover {
     background: #3498db;
     border-radius: 3px;
 }
-
 </style>
 </head>
-
 <body>
 
-<div class="header">
-💬 Messagerie RentMaster
-</div>
+<div class="header">💬 Messagerie RentMaster</div>
 
 <nav>
-  <a href="dashboard_locataire.html">Dashboard</a>
-  <a href="contrat_locataire.html">Contrats</a>
-  <a href="guide.html">Guide</a>
-  <a href="notification_locataire.html">Notifications 🔔</a>
+  <a href="dashboard_locataire.html"><i class="fas fa-chart-line"></i>Dashboard</a>
+  <a href="contrat_locataire.html"><i class="fas fa-file-contract"></i>Contrats</a>
+  <a href="guide.html"><i class="fas fa-book"></i>Guide</a>
+  <a href="notification_locataire.html"><i class="fas fa-bell"></i>Notifications</a>
 </nav>
 
 <div id="chatContainer"></div>
@@ -162,14 +174,12 @@ nav a:hover {
 </div>
 
 <script>
-
-// --- DATA ---
+// DATA
 let locataires = JSON.parse(localStorage.getItem("locataires")) || [];
 let messages = JSON.parse(localStorage.getItem("messages")) || [];
-
 const nomProprietaire = "Propriétaire";
 
-// --- INIT LOCATAIRES TEST ---
+// TEST LOCATAIRES
 if(locataires.length === 0){
   locataires = [
     {id: 1, nom: "Ketsia", prenom: "Divine"},
@@ -178,13 +188,13 @@ if(locataires.length === 0){
   localStorage.setItem("locataires", JSON.stringify(locataires));
 }
 
-// --- SELECT ---
+// SELECT
 const locSelect = document.getElementById('locataireSelect');
 locataires.forEach(l => {
   locSelect.innerHTML += `<option value="${l.id}">${l.nom} ${l.prenom}</option>`;
 });
 
-// --- AFFICHER ---
+// AFFICHER MESSAGES
 function afficherMessages() {
   const container = document.getElementById('chatContainer');
   container.innerHTML = "";
@@ -194,17 +204,16 @@ function afficherMessages() {
     return;
   }
 
-  messages.forEach(m => {
+  messages.forEach((m,index) => {
     const div = document.createElement('div');
     div.classList.add('message');
     div.classList.add(m.deNom === nomProprietaire ? 'proprietaire' : 'locataire');
 
     div.innerHTML = `
-      <div class="info-msg">
-        ${m.deNom} → ${m.aNom}
-      </div>
+      <div class="info-msg">${m.deNom} → ${m.aNom}</div>
       ${m.text}
       <div class="date-msg">${m.date}</div>
+      <i class="fas fa-trash delete-btn" onclick="supprimerMessage(${index})" title="Supprimer"></i>
     `;
 
     container.appendChild(div);
@@ -213,16 +222,11 @@ function afficherMessages() {
   container.scrollTop = container.scrollHeight;
 }
 
-// --- ENVOYER ---
+// ENVOYER MESSAGE
 function envoyerMessage() {
   const locId = locSelect.value;
   const texte = document.getElementById('messageText').value.trim();
-
-  if(!locId || !texte){
-    alert("Écris un message !");
-    return;
-  }
-
+  if(!locId || !texte){ alert("Écris un message !"); return; }
   const loc = locataires.find(l => l.id == locId);
 
   const newMessage = {
@@ -235,15 +239,20 @@ function envoyerMessage() {
 
   messages.push(newMessage);
   localStorage.setItem("messages", JSON.stringify(messages));
-
   document.getElementById('messageText').value = "";
   afficherMessages();
 }
 
-// --- INIT ---
+// SUPPRIMER MESSAGE
+function supprimerMessage(index){
+  if(confirm("Supprimer ce message ?")){
+    messages.splice(index,1);
+    localStorage.setItem("messages",JSON.stringify(messages));
+    afficherMessages();
+  }
+}
+
 afficherMessages();
-
 </script>
-
 </body>
 </html>

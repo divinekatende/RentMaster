@@ -66,6 +66,41 @@ body{background:var(--bg);display:flex;}
 /* HERO */
 .hero{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:#fff;padding:25px;border-radius:var(--radius);margin-bottom:20px;}
 
+/* BOUTON CALCULATRICE PREMIUM */
+.fab-calculator{
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-light));
+    color: white;
+    border: none;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    cursor: pointer;
+    z-index: 9999;
+    transition: all 0.3s ease;
+}
+
+/* HOVER */
+.fab-calculator:hover{
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* VERSION MOBILE */
+@media(max-width:768px){
+    .fab-calculator{
+        bottom: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+    }
+}
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px;}
 .card{background:#fff;padding:20px;border-radius:var(--radius);box-shadow:0 5px 15px rgba(0,0,0,0.05);}
@@ -103,8 +138,9 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
 <div class="sidebar" id="sidebar">
   <div class="brand">
     <i class="fa-solid fa-building"></i>
-     <button class="btn btn-ghost" onclick="toggleSidebar()">☰</button>
     <span>RentMaster</span>
+     <button class="btn btn-ghost" onclick="toggleSidebar()">☰</button>
+    
   </div>
 
   <div class="nav">
@@ -115,6 +151,7 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
     <a href="paiement.html"><i class="fa fa-credit-card"></i><span>Paiements</span></a>
     <a href="profil.html"><i class="fa fa-user-circle"></i> Profil</a>
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+    
     
   </div>
 
@@ -156,6 +193,11 @@ th,td{padding:10px;border-bottom:1px solid #eee;}
   <div class="card"><h3>Contrats</h3><p id="nbContrats">0</p></div>
   <div class="card"><h3>Paiements</h3><p id="nbPaiements">0</p></div>
 </div>
+
+<!-- BOUTON CALCULATRICE FLOTTANT -->
+<button class="fab-calculator" onclick="window.location='calculatrice.html'">
+    <i class="fas fa-calculator"></i>
+</button>
 
 <!-- GRID -->
 <div class="grid">
